@@ -1,12 +1,12 @@
-﻿Progresso,6%,,,,
+﻿Progresso,12%,,,,
 Entrega,28/11 às 23:59 (Classroom) · Apresentação em 30/11,,,,
 ,,,,,
 Etapa,Atividade,Prazo,Responsável,Status,Detalhes
 0 · Organização,Formar o grupo e anotar nomes e RAs,2026-11-21,Grupo,Concluído,De 2 a 4 integrantes. Nome e RA vão na capa do PPT.
 0 · Organização,Dividir as tarefas entre os integrantes,2026-11-21,Grupo,Em andamento,"Vira slide. Sugestão: A = qualidade/ETL · B = Q3 a Q7 · C = Q9 + hipóteses · D = Q10, LGPD e revisão."
 0 · Organização,Escolher o ambiente (Colab ou VSCode),2026-11-21,Grupo,Concluído,"Se for Colab, baixar o .ipynb no fim."
-1 · Estrutura do notebook,Criar as seções em Markdown,2026-11-21,A,A fazer,Introdução → bibliotecas → carga do CSV → Q1 → Q2/ETL → EDA → hipóteses → conclusões.
-1 · Estrutura do notebook,Importar as bibliotecas e carregar o CSV,2026-11-21,A,A fazer,"pandas e matplotlib/seaborn; arquivo synthetic_coffee_health_10000.csv."
+1 · Estrutura do notebook,Criar as seções em Markdown,2026-11-21,A,Concluído,Introdução → bibliotecas → carga do CSV → Q1 → Q2/ETL → EDA → hipóteses → conclusões.
+1 · Estrutura do notebook,Importar as bibliotecas e carregar o CSV,2026-11-21,A,Concluído,"pandas e matplotlib/seaborn; arquivo synthetic_coffee_health_10000.csv."
 2 · Conhecer o dataset (Q1),"Registros, colunas, tipos, 5 primeiras linhas e resumo estatístico",2026-11-21,A,A fazer,"shape, dtypes, head(), describe()."
 2 · Conhecer o dataset (Q1),Classificar cada coluna pelo tipo de dado,2026-11-21,A,A fazer,"Numéricas contínuas/discretas, categóricas, ordinais (Sleep_Quality, Stress_Level, Health_Issues) e binárias (Smoking, Alcohol). Conteúdo da aula de 21/09."
 3 · Qualidade e ETL (Q2),Contar valores ausentes e duplicados,2026-11-21,A,A fazer,isnull().sum() e duplicated().
