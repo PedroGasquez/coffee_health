@@ -16,7 +16,7 @@ Os resultados indicam associações nos dados sintéticos, não relações de ca
 
 ```
 data/        dataset original (não deve ser alterado)
-docs/        enunciado e dicionário de dados (Read_Dataset_Coffee_Health.md)
+docs/        enunciado e dicionário de dados (Read_Dataset_Coffee_Health.md) e trilha do projeto (trilha_projeto.csv)
 notebooks/   notebook com a análise
 ```
 
@@ -48,6 +48,8 @@ No Google Colab, envie o CSV para a sessão e ajuste `DATA_PATH` na célula de c
 - Documento de análise impresso.
 
 ## Trilha do projeto
+
+A versão editável fica em [docs/trilha_projeto.csv](docs/trilha_projeto.csv); atualize o status lá e nesta tabela.
 
 Divisão sugerida: **A** = qualidade/ETL · **B** = Q3 a Q7 · **C** = Q9 + hipóteses · **D** = Q10, LGPD e revisão.
 
