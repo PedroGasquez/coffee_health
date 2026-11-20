@@ -66,7 +66,7 @@ Divisão sugerida: **A** = qualidade/ETL · **B** = Q3 a Q7 · **C** = Q9 + hip�
 | 3 · Qualidade e ETL (Q2) | Tratar os vazios de Health_Issues | 21/11 | A | Concluído | Vazio não significa "sem problema": usar "Não informado" ou filtrar. |
 | 3 · Qualidade e ETL (Q2) | Trabalhar sempre numa cópia dos dados | 21/11 | A | Concluído | `df.copy()`; nunca alterar o CSV original. |
 | 3 · Qualidade e ETL (Q2) | Desenhar o fluxo ETL | 21/11 | A | Concluído | Extração (CSV) → Transformação (duplicados, ausentes, categorias, ordem dos ordinais, anonimização) → Carga (DataFrame limpo). |
-| 4 · EDA | Q3 – Perfil por gênero | 24/11 | B | A fazer | `value_counts()` + média de Age por Gender + gráfico de barras. |
+| 4 · EDA | Q3 – Perfil por gênero | 24/11 | B | Concluído | `value_counts()` + média de Age por Gender + gráfico de barras. |
 | 4 · EDA | Q4 – Consumo de café | 24/11 | B | A fazer | Média, mínimo e máximo de Coffee_Intake + top 5 países por média. |
 | 4 · EDA | Q5 – Café × cafeína | 24/11 | B | A fazer | `corr()` + gráfico de dispersão; explicar o que o valor significa. |
 | 4 · EDA | Q6 – Café × qualidade do sono | 24/11 | B | A fazer | `groupby('Sleep_Quality')`; comparar Poor e Excellent. |

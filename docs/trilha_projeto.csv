@@ -1,4 +1,4 @@
-﻿Progresso,30%,,,,
+﻿Progresso,33%,,,,
 Entrega,28/11 às 23:59 (Classroom) · Apresentação em 30/11,,,,
 ,,,,,
 Etapa,Atividade,Prazo,Responsável,Status,Detalhes
@@ -13,7 +13,7 @@ Etapa,Atividade,Prazo,Responsável,Status,Detalhes
 3 · Qualidade e ETL (Q2),Tratar os vazios de Health_Issues,2026-11-21,A,Concluído,Vazio não significa 'sem problema': usar 'Não informado' ou filtrar.
 3 · Qualidade e ETL (Q2),Trabalhar sempre numa cópia dos dados,2026-11-21,A,Concluído,"df.copy(); nunca alterar o CSV original."
 3 · Qualidade e ETL (Q2),Desenhar o fluxo ETL,2026-11-21,A,Concluído,"Extração (CSV) → Transformação (duplicados, ausentes, categorias, ordem dos ordinais, anonimização) → Carga (DataFrame limpo)."
-4 · EDA,Q3 – Perfil por gênero,2026-11-24,B,A fazer,value_counts() + média de Age por Gender + gráfico de barras.
+4 · EDA,Q3 – Perfil por gênero,2026-11-24,B,Concluído,value_counts() + média de Age por Gender + gráfico de barras.
 4 · EDA,Q4 – Consumo de café,2026-11-24,B,A fazer,"Média, mínimo e máximo de Coffee_Intake + top 5 países por média."
 4 · EDA,Q5 – Café × cafeína,2026-11-24,B,A fazer,"corr() + gráfico de dispersão; explicar o que o valor significa."
 4 · EDA,Q6 – Café × qualidade do sono,2026-11-24,B,A fazer,"groupby('Sleep_Quality'); comparar Poor e Excellent."
