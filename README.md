@@ -60,8 +60,8 @@ Divisão sugerida: **A** = qualidade/ETL · **B** = Q3 a Q7 · **C** = Q9 + hip�
 | 0 · Organização | Escolher o ambiente (Colab ou VSCode) | 21/11 | Grupo | Concluído | Se for Colab, baixar o `.ipynb` no fim. |
 | 1 · Estrutura do notebook | Criar as seções em Markdown | 21/11 | A | Concluído | Introdução → bibliotecas → carga do CSV → Q1 → Q2/ETL → EDA → hipóteses → conclusões. |
 | 1 · Estrutura do notebook | Importar as bibliotecas e carregar o CSV | 21/11 | A | Concluído | pandas e matplotlib/seaborn; arquivo `synthetic_coffee_health_10000.csv`. |
-| 2 · Conhecer o dataset (Q1) | Registros, colunas, tipos, 5 primeiras linhas e resumo estatístico | 21/11 | A | A fazer | `shape`, `dtypes`, `head()`, `describe()`. |
-| 2 · Conhecer o dataset (Q1) | Classificar cada coluna pelo tipo de dado | 21/11 | A | A fazer | Numéricas contínuas/discretas, categóricas, ordinais (Sleep_Quality, Stress_Level, Health_Issues) e binárias (Smoking, Alcohol). Conteúdo da aula de 21/09. |
+| 2 · Conhecer o dataset (Q1) | Registros, colunas, tipos, 5 primeiras linhas e resumo estatístico | 21/11 | A | Concluído | `shape`, `dtypes`, `head()`, `describe()`. |
+| 2 · Conhecer o dataset (Q1) | Classificar cada coluna pelo tipo de dado | 21/11 | A | Concluído | Numéricas contínuas/discretas, categóricas, ordinais (Sleep_Quality, Stress_Level, Health_Issues) e binárias (Smoking, Alcohol). Conteúdo da aula de 21/09. |
 | 3 · Qualidade e ETL (Q2) | Contar valores ausentes e duplicados | 21/11 | A | A fazer | `isnull().sum()` e `duplicated()`. |
 | 3 · Qualidade e ETL (Q2) | Tratar os vazios de Health_Issues | 21/11 | A | A fazer | Vazio não significa "sem problema": usar "Não informado" ou filtrar. |
 | 3 · Qualidade e ETL (Q2) | Trabalhar sempre numa cópia dos dados | 21/11 | A | A fazer | `df.copy()`; nunca alterar o CSV original. |
