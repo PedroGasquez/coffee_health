@@ -62,10 +62,10 @@ Divisão sugerida: **A** = qualidade/ETL · **B** = Q3 a Q7 · **C** = Q9 + hip�
 | 1 · Estrutura do notebook | Importar as bibliotecas e carregar o CSV | 21/11 | A | Concluído | pandas e matplotlib/seaborn; arquivo `synthetic_coffee_health_10000.csv`. |
 | 2 · Conhecer o dataset (Q1) | Registros, colunas, tipos, 5 primeiras linhas e resumo estatístico | 21/11 | A | Concluído | `shape`, `dtypes`, `head()`, `describe()`. |
 | 2 · Conhecer o dataset (Q1) | Classificar cada coluna pelo tipo de dado | 21/11 | A | Concluído | Numéricas contínuas/discretas, categóricas, ordinais (Sleep_Quality, Stress_Level, Health_Issues) e binárias (Smoking, Alcohol). Conteúdo da aula de 21/09. |
-| 3 · Qualidade e ETL (Q2) | Contar valores ausentes e duplicados | 21/11 | A | A fazer | `isnull().sum()` e `duplicated()`. |
-| 3 · Qualidade e ETL (Q2) | Tratar os vazios de Health_Issues | 21/11 | A | A fazer | Vazio não significa "sem problema": usar "Não informado" ou filtrar. |
-| 3 · Qualidade e ETL (Q2) | Trabalhar sempre numa cópia dos dados | 21/11 | A | A fazer | `df.copy()`; nunca alterar o CSV original. |
-| 3 · Qualidade e ETL (Q2) | Desenhar o fluxo ETL | 21/11 | A | A fazer | Extração (CSV) → Transformação (duplicados, ausentes, categorias, ordem dos ordinais, anonimização) → Carga (DataFrame limpo). |
+| 3 · Qualidade e ETL (Q2) | Contar valores ausentes e duplicados | 21/11 | A | Concluído | `isnull().sum()` e `duplicated()`. |
+| 3 · Qualidade e ETL (Q2) | Tratar os vazios de Health_Issues | 21/11 | A | Concluído | Vazio não significa "sem problema": usar "Não informado" ou filtrar. |
+| 3 · Qualidade e ETL (Q2) | Trabalhar sempre numa cópia dos dados | 21/11 | A | Concluído | `df.copy()`; nunca alterar o CSV original. |
+| 3 · Qualidade e ETL (Q2) | Desenhar o fluxo ETL | 21/11 | A | Concluído | Extração (CSV) → Transformação (duplicados, ausentes, categorias, ordem dos ordinais, anonimização) → Carga (DataFrame limpo). |
 | 4 · EDA | Q3 – Perfil por gênero | 24/11 | B | A fazer | `value_counts()` + média de Age por Gender + gráfico de barras. |
 | 4 · EDA | Q4 – Consumo de café | 24/11 | B | A fazer | Média, mínimo e máximo de Coffee_Intake + top 5 países por média. |
 | 4 · EDA | Q5 – Café × cafeína | 24/11 | B | A fazer | `corr()` + gráfico de dispersão; explicar o que o valor significa. |
