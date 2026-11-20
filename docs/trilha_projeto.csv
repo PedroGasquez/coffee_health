@@ -1,4 +1,4 @@
-﻿Progresso,33%,,,,
+﻿Progresso,55%,,,,
 Entrega,28/11 às 23:59 (Classroom) · Apresentação em 30/11,,,,
 ,,,,,
 Etapa,Atividade,Prazo,Responsável,Status,Detalhes
@@ -14,13 +14,13 @@ Etapa,Atividade,Prazo,Responsável,Status,Detalhes
 3 · Qualidade e ETL (Q2),Trabalhar sempre numa cópia dos dados,2026-11-21,A,Concluído,"df.copy(); nunca alterar o CSV original."
 3 · Qualidade e ETL (Q2),Desenhar o fluxo ETL,2026-11-21,A,Concluído,"Extração (CSV) → Transformação (duplicados, ausentes, categorias, ordem dos ordinais, anonimização) → Carga (DataFrame limpo)."
 4 · EDA,Q3 – Perfil por gênero,2026-11-24,B,Concluído,value_counts() + média de Age por Gender + gráfico de barras.
-4 · EDA,Q4 – Consumo de café,2026-11-24,B,A fazer,"Média, mínimo e máximo de Coffee_Intake + top 5 países por média."
-4 · EDA,Q5 – Café × cafeína,2026-11-24,B,A fazer,"corr() + gráfico de dispersão; explicar o que o valor significa."
-4 · EDA,Q6 – Café × qualidade do sono,2026-11-24,B,A fazer,"groupby('Sleep_Quality'); comparar Poor e Excellent."
-4 · EDA,Q7 – Sono × estresse,2026-11-24,B,A fazer,Média de Sleep_Hours por Stress_Level + gráfico comparativo.
-4 · EDA,Q9 – Análise conjunta estresse × sono,2026-11-24,C,A fazer,"groupby([Stress_Level, Sleep_Quality]) com contagem e médias; comentar os grupos pequenos."
-4 · EDA,Q10 – Associações com problemas de saúde,2026-11-24,D,A fazer,"Só registros com Health_Issues preenchido; médias + % de fumantes; correlação não é causalidade (dados sintéticos)."
-4 · EDA,Comparar média e mediana onde fizer sentido,2026-11-24,B,A fazer,Mostra o efeito dos outliers (aula de 21/09).
+4 · EDA,Q4 – Consumo de café,2026-11-24,B,Concluído,"Média, mínimo e máximo de Coffee_Intake + top 5 países por média."
+4 · EDA,Q5 – Café × cafeína,2026-11-24,B,Concluído,"corr() + gráfico de dispersão; explicar o que o valor significa."
+4 · EDA,Q6 – Café × qualidade do sono,2026-11-24,B,Concluído,"groupby('Sleep_Quality'); comparar Poor e Excellent."
+4 · EDA,Q7 – Sono × estresse,2026-11-24,B,Concluído,Média de Sleep_Hours por Stress_Level + gráfico comparativo.
+4 · EDA,Q9 – Análise conjunta estresse × sono,2026-11-24,C,Concluído,"groupby([Stress_Level, Sleep_Quality]) com contagem e médias; comentar os grupos pequenos."
+4 · EDA,Q10 – Associações com problemas de saúde,2026-11-24,D,Concluído,"Só registros com Health_Issues preenchido; médias + % de fumantes; correlação não é causalidade (dados sintéticos)."
+4 · EDA,Comparar média e mediana onde fizer sentido,2026-11-24,B,Concluído,Mostra o efeito dos outliers (aula de 21/09).
 6 · LGPD e ética,Identificar os dados pessoais sensíveis,2026-11-25,D,A fazer,"Dados de saúde: Health_Issues, Smoking, Alcohol_Consumption, BMI, Heart_Rate."
 6 · LGPD e ética,Descrever os riscos,2026-11-25,D,A fazer,"Reidentificação cruzando Age + Gender + Country + Occupation; discriminação (ex.: seguradoras)."
 6 · LGPD e ética,Definir as medidas de proteção,2026-11-25,D,A fazer,"Pseudonimizar ou remover o ID, faixas etárias, minimização, finalidade, consentimento, controle de acesso. Lembrar que o dataset é sintético."
