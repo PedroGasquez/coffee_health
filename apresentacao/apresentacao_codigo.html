@@ -8,76 +8,109 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
 <style>
-/* Layout: índice fixo à esquerda + palco 16:9 com código (esquerda) e explicação (direita) */
+/* Layout: índice recolhível à esquerda + palco com trilha de progresso e slide 16:9.
+   Cada seção tem uma cor própria (--sec), usada no slide, no índice, nos passos e no resultado. */
 :root {
-  --bg: #f6f7f8; --superficie: #ffffff; --tinta: #1d1714; --suave: #6b5f58; --linha: #e3ded9;
-  --cafe: #6f4e37; --cereja: #b8452f; --salvia: #3f7563; --realce: #f4e3dd;
-  --cod-bg: #1f1915; --cod-fg: #efe7e0; --cod-chave: #f0a868; --cod-str: #a8d4a0; --cod-com: #8f8178; --cod-num: #e8c46a; --cod-fn: #8cc4e8;
+  --bg: #eef0f4; --superficie: #ffffff; --tinta: #17141c; --suave: #615b6b; --linha: #dfdde6;
+  --abertura: #c2571f; --preparacao: #0a8a86; --eda: #c92a62; --lgpd: #5847d6; --encerramento: #b07800;
+  --sec: var(--abertura);
+  --cod-bg: #16121c; --cod-fg: #ece8f2; --cod-chave: #ff9f5a; --cod-str: #8fe0a8; --cod-com: #8a8496; --cod-num: #ffd166; --cod-fn: #7cc6ff;
+  --sombra: 0 24px 60px -32px rgba(23, 20, 28, .45);
   --f-titulo: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
   --f-texto: "Inter", "Segoe UI", system-ui, sans-serif;
   --f-cod: "JetBrains Mono", Consolas, "Courier New", monospace;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #141110; --superficie: #1d1916; --tinta: #f1ebe6; --suave: #b3a59b; --linha: #352d28;
-  --cafe: #d2a27c; --cereja: #ef8a72; --salvia: #8cc7ad; --realce: #3a2620;
-  --cod-bg: #0f0c0a; color-scheme: dark; } }
+  --bg: #0f0d13; --superficie: #19161f; --tinta: #f3f0f7; --suave: #aaa3b5; --linha: #2c2834;
+  --abertura: #ff8a4c; --preparacao: #3fd0c6; --eda: #ff5d93; --lgpd: #9d8cff; --encerramento: #ffc53d;
+  --cod-bg: #0b0910; --sombra: 0 24px 60px -30px rgba(0, 0, 0, .8); color-scheme: dark; } }
 :root[data-theme="dark"] {
-  --bg: #141110; --superficie: #1d1916; --tinta: #f1ebe6; --suave: #b3a59b; --linha: #352d28;
-  --cafe: #d2a27c; --cereja: #ef8a72; --salvia: #8cc7ad; --realce: #3a2620;
-  --cod-bg: #0f0c0a; color-scheme: dark; }
+  --bg: #0f0d13; --superficie: #19161f; --tinta: #f3f0f7; --suave: #aaa3b5; --linha: #2c2834;
+  --abertura: #ff8a4c; --preparacao: #3fd0c6; --eda: #ff5d93; --lgpd: #9d8cff; --encerramento: #ffc53d;
+  --cod-bg: #0b0910; --sombra: 0 24px 60px -30px rgba(0, 0, 0, .8); color-scheme: dark; }
+
+[data-secao="abertura"] { --sec: var(--abertura); }
+[data-secao="preparacao"] { --sec: var(--preparacao); }
+[data-secao="eda"] { --sec: var(--eda); }
+[data-secao="lgpd"] { --sec: var(--lgpd); }
+[data-secao="encerramento"] { --sec: var(--encerramento); }
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--tinta); font: 16px/1.55 var(--f-texto); }
 code, kbd, pre { font-family: var(--f-cod); }
-:focus-visible { outline: 2px solid var(--cereja); outline-offset: 2px; }
+:focus-visible { outline: 2px solid var(--sec); outline-offset: 2px; }
+.ponto { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--sec); flex: none; }
 
-.app { display: grid; grid-template-columns: 290px minmax(0, 1fr); min-height: 100vh; }
+.app { display: grid; grid-template-columns: 300px minmax(0, 1fr); min-height: 100vh; background: var(--bg); transition: grid-template-columns .3s ease; }
+.app.recolhido { grid-template-columns: 0 minmax(0, 1fr); }
 
 /* Índice */
-.indice { position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--superficie); border-right: 1px solid var(--linha); padding: 28px 20px; }
+.indice { position: sticky; top: 0; height: 100vh; overflow-y: auto; overflow-x: hidden; background: var(--superficie); border-right: 1px solid var(--linha); padding: 28px 18px; }
+.app.recolhido .indice { padding-inline: 0; border-right: 0; visibility: hidden; }
 .marca { font: 700 1.25rem/1.2 var(--f-titulo); margin: 0 0 4px; }
-.marca-sub { color: var(--suave); font-size: .85rem; margin: 0 0 20px; }
-.abrir-indice { display: none; }
-.progresso { height: 4px; background: var(--linha); border-radius: 4px; overflow: hidden; margin-bottom: 22px; }
-.progresso span { display: block; height: 100%; width: 0; background: var(--cereja); transition: width .25s ease; }
+.marca-sub { color: var(--suave); font-size: .85rem; margin: 0 0 22px; }
 .indice ol { list-style: none; margin: 0; padding: 0; }
 .grupo { margin-bottom: 16px; }
-.grupo-nome { display: block; font: 600 .72rem/1 var(--f-texto); letter-spacing: .08em; text-transform: uppercase; color: var(--suave); margin: 0 0 8px 8px; }
-.indice a { display: flex; gap: 10px; align-items: baseline; padding: 7px 8px; border-radius: 8px; color: var(--tinta); text-decoration: none; font-size: .92rem; }
-.indice a:hover { background: var(--bg); }
-.indice a[aria-current="true"] { background: var(--realce); color: var(--tinta); font-weight: 600; }
+.grupo-nome { display: flex; align-items: center; gap: 8px; font: 700 .72rem/1 var(--f-texto); letter-spacing: .08em; text-transform: uppercase; color: var(--sec); margin: 0 0 8px 8px; }
+.indice a { display: flex; gap: 10px; align-items: baseline; padding: 7px 10px; border-radius: 10px; color: var(--tinta); text-decoration: none; font-size: .92rem; border: 1px solid transparent; }
+.indice a:hover { background: color-mix(in srgb, var(--sec) 8%, transparent); }
+.indice a[aria-current="true"] { background: color-mix(in srgb, var(--sec) 16%, transparent); border-color: color-mix(in srgb, var(--sec) 35%, transparent); font-weight: 600; }
 .num { font: 500 .78rem var(--f-cod); color: var(--suave); font-variant-numeric: tabular-nums; }
-.indice a[aria-current="true"] .num { color: var(--cereja); }
+.indice a[aria-current="true"] .num { color: var(--sec); }
 
 /* Palco */
-.palco { padding-block: 28px; padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 18px; min-width: 0; }
-.barra { display: flex; justify-content: space-between; align-items: center; gap: 12px; max-width: 1280px; width: 100%; margin: 0 auto; }
-.contador { font: 500 .9rem var(--f-cod); color: var(--suave); font-variant-numeric: tabular-nums; }
-.botoes { display: flex; gap: 8px; }
-.botoes button { font: 600 .9rem var(--f-texto); padding: 9px 16px; border-radius: 999px; border: 1px solid var(--linha); background: var(--superficie); color: var(--tinta); cursor: pointer; }
-.botoes button:hover:not(:disabled) { border-color: var(--cafe); }
-.botoes button:disabled { opacity: .4; cursor: default; }
+.palco { padding-block: 22px 32px; padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: max(32px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.barra { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 18px; max-width: 1320px; width: 100%; margin: 0 auto; }
+.barra-esq, .botoes { display: flex; align-items: center; gap: 8px; }
+.contador { font: 600 .9rem var(--f-cod); color: var(--suave); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.contador b { color: var(--sec); }
+.btn { display: inline-flex; align-items: center; gap: 6px; font: 600 .88rem var(--f-texto); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--linha); background: var(--superficie); color: var(--tinta); cursor: pointer; white-space: nowrap; }
+.btn:hover:not(:disabled) { border-color: var(--sec); color: var(--sec); }
+.btn:disabled { opacity: .35; cursor: default; }
+.btn.primario { background: var(--sec); border-color: var(--sec); color: var(--superficie); }
+.btn.primario:hover:not(:disabled) { color: var(--superficie); filter: brightness(1.08); }
+.btn svg { width: 16px; height: 16px; }
 
-.slides { max-width: 1280px; width: 100%; margin: 0 auto; }
-.slide { background: var(--superficie); border: 1px solid var(--linha); border-radius: 16px; padding: clamp(24px, 3.4vw, 48px); box-shadow: 0 12px 40px -24px rgba(43, 29, 22, .35); }
+/* Trilha: um segmento por slide, na cor da seção */
+.trilha { display: flex; gap: 4px; align-items: center; min-width: 0; }
+.seg { flex: 1; height: 8px; min-width: 6px; border: 0; padding: 0; border-radius: 99px; background: var(--sec); opacity: .2; cursor: pointer; transition: opacity .2s, height .2s; }
+.seg:hover { opacity: .6; }
+.seg.feito { opacity: .55; }
+.seg.atual { opacity: 1; height: 14px; }
+
+.slides { max-width: 1320px; width: 100%; margin: 0 auto; }
+.slide { position: relative; background:
+    radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--sec) 16%, transparent), transparent 55%),
+    radial-gradient(80% 70% at 0% 100%, color-mix(in srgb, var(--sec) 8%, transparent), transparent 60%),
+    var(--superficie);
+  border: 1px solid color-mix(in srgb, var(--sec) 25%, var(--linha)); border-radius: 20px; padding: clamp(24px, 3.4vw, 48px); box-shadow: var(--sombra); }
 .js .slide { aspect-ratio: 16 / 9; display: flex; flex-direction: column; }
 .js .slide:not(.ativo) { display: none; }
+.js .slide.ativo { animation: entrar .35s ease both; }
+.js .slide.ativo.voltando { animation-name: entrar-volta; }
+@keyframes entrar { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+@keyframes entrar-volta { from { opacity: 0; transform: translateX(-24px); } to { opacity: 1; transform: none; } }
 .slide + .slide { margin-top: 24px; }
 .js .slide + .slide { margin-top: 0; }
 
-.eyebrow { font: 600 .75rem/1 var(--f-texto); letter-spacing: .1em; text-transform: uppercase; color: var(--cereja); margin: 0 0 10px; }
+.eyebrow { display: flex; align-items: center; gap: 8px; font: 700 .76rem/1 var(--f-texto); letter-spacing: .1em; text-transform: uppercase; color: var(--sec); margin: 0 0 12px; }
 h1, h2, h3 { font-family: var(--f-titulo); text-wrap: balance; margin: 0; }
-h2 { font-size: clamp(1.5rem, 2.4vw, 2.1rem); line-height: 1.15; margin-bottom: 22px; }
+h2 { font-size: clamp(1.6rem, 2.6vw, 2.3rem); line-height: 1.12; margin-bottom: 24px; letter-spacing: -.01em; }
 h3 { font-size: 1rem; margin-bottom: 12px; }
 
 .grade { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 28px; flex: 1; }
-.codigo { margin: 0; display: flex; flex-direction: column; min-width: 0; background: var(--cod-bg); border-radius: 12px; overflow: hidden; }
-.codigo figcaption { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px; font: .75rem var(--f-cod); color: var(--cod-com); border-bottom: 1px solid rgba(255, 255, 255, .08); }
+.codigo { margin: 0; display: flex; flex-direction: column; min-width: 0; background: var(--cod-bg); border-radius: 14px; overflow: hidden; box-shadow: 0 0 0 1px color-mix(in srgb, var(--sec) 30%, transparent), 0 18px 40px -24px color-mix(in srgb, var(--sec) 60%, transparent); }
+.codigo figcaption { display: flex; align-items: center; gap: 12px; padding: 10px 14px; font: .75rem var(--f-cod); color: var(--cod-com); border-bottom: 1px solid rgba(255, 255, 255, .07); }
+.janela { display: flex; gap: 6px; }
+.janela i { width: 10px; height: 10px; border-radius: 50%; background: #ff6159; }
+.janela i:nth-child(2) { background: #ffbd2e; }
+.janela i:nth-child(3) { background: #28c941; }
+.arquivo { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .copiar { font: 600 .72rem var(--f-texto); color: var(--cod-fg); background: rgba(255, 255, 255, .08); border: 0; border-radius: 6px; padding: 5px 10px; cursor: pointer; }
-.copiar:hover { background: rgba(255, 255, 255, .16); }
-.codigo pre { margin: 0; padding: 16px 18px; overflow: auto; flex: 1; max-height: 70vh; font-size: clamp(.7rem, .78vw, .86rem); line-height: 1.6; color: var(--cod-fg); }
+.copiar:hover { background: color-mix(in srgb, var(--sec) 45%, transparent); }
+.codigo pre { margin: 0; padding: 16px 18px; overflow: auto; flex: 1; max-height: 70vh; font-size: clamp(.7rem, .78vw, .86rem); line-height: 1.65; color: var(--cod-fg); }
 .hljs-keyword, .hljs-built_in, .hljs-literal { color: var(--cod-chave); }
 .hljs-string, .hljs-subst { color: var(--cod-str); }
 .hljs-comment, .hljs-meta { color: var(--cod-com); font-style: italic; }
@@ -87,72 +120,85 @@ h3 { font-size: 1rem; margin-bottom: 12px; }
 .explica { display: flex; flex-direction: column; min-width: 0; }
 .explica ol { margin: 0 0 20px; padding: 0; list-style: none; counter-reset: passo; display: grid; gap: 12px; }
 .explica li { counter-increment: passo; display: grid; grid-template-columns: 28px 1fr; gap: 10px; font-size: .95rem; }
-.explica li::before { content: counter(passo); display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--cafe); color: var(--superficie); font: 600 .75rem var(--f-cod); margin-top: 1px; }
-.explica code, .painel code { font-size: .86em; background: var(--bg); border: 1px solid var(--linha); border-radius: 5px; padding: 1px 5px; }
-.resultado { margin-top: auto; display: flex; flex-direction: column; gap: 4px; padding: 16px 18px; border-radius: 12px; background: var(--realce); }
-.resultado strong { font: 700 clamp(1.6rem, 2.6vw, 2.2rem)/1.1 var(--f-titulo); color: var(--cereja); font-variant-numeric: tabular-nums; }
-.resultado span { font-size: .9rem; color: var(--tinta); }
+.explica li::before { content: counter(passo); display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--sec); color: var(--superficie); font: 700 .75rem var(--f-cod); margin-top: 1px; }
+.explica code, .painel code, .lede code { font-size: .86em; background: color-mix(in srgb, var(--sec) 10%, var(--superficie)); border: 1px solid color-mix(in srgb, var(--sec) 22%, var(--linha)); border-radius: 5px; padding: 1px 5px; }
+.resultado { margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding: 16px 20px; border-radius: 14px; background: linear-gradient(135deg, color-mix(in srgb, var(--sec) 22%, var(--superficie)), color-mix(in srgb, var(--sec) 8%, var(--superficie))); border: 1px solid color-mix(in srgb, var(--sec) 35%, transparent); }
+.rotulo-resultado { font: 700 .68rem/1 var(--f-texto); letter-spacing: .1em; text-transform: uppercase; color: var(--sec); margin-bottom: 4px; }
+.resultado strong { font: 700 clamp(1.7rem, 2.8vw, 2.4rem)/1.1 var(--f-titulo); color: var(--sec); font-variant-numeric: tabular-nums; }
+.resultado span:last-child { font-size: .9rem; color: var(--tinta); }
 
 /* Capa */
 .capa { display: flex; flex-direction: column; justify-content: center; flex: 1; gap: 18px; }
-.capa h1 { font-size: clamp(2.6rem, 6vw, 4.6rem); line-height: 1; letter-spacing: -.02em; }
-.lede { font-size: clamp(1rem, 1.5vw, 1.2rem); color: var(--suave); max-width: 60ch; margin: 0; }
-.fatos { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 0; }
-.fatos div { padding: 12px 18px; border-radius: 12px; background: var(--bg); border: 1px solid var(--linha); }
+.capa h1 { font-size: clamp(2.8rem, 6.4vw, 5rem); line-height: 1; letter-spacing: -.03em; }
+.grad { background: linear-gradient(90deg, var(--abertura), var(--eda) 55%, var(--lgpd)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lede { font-size: clamp(1rem, 1.5vw, 1.2rem); color: var(--suave); max-width: 62ch; margin: 0; }
+.fatos { display: flex; flex-wrap: wrap; gap: 12px; margin: 6px 0 0; }
+.fatos div { padding: 12px 18px; border-radius: 14px; background: var(--superficie); border: 1px solid var(--linha); }
 .fatos dt { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--suave); }
-.fatos dd { margin: 2px 0 0; font: 700 1.3rem var(--f-titulo); color: var(--cafe); }
-.dica { color: var(--suave); font-size: .9rem; margin: 0; }
-kbd { font-size: .8rem; padding: 2px 7px; border: 1px solid var(--linha); border-bottom-width: 2px; border-radius: 5px; background: var(--bg); }
+.fatos dd { margin: 2px 0 0; font: 700 1.3rem var(--f-titulo); color: var(--tinta); }
+.legenda { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.legenda li { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-size: .85rem; font-weight: 600; color: var(--sec); background: color-mix(in srgb, var(--sec) 12%, transparent); }
+.dica { color: var(--suave); font-size: .88rem; margin: 0; }
+kbd { font-size: .78rem; padding: 2px 7px; border: 1px solid var(--linha); border-bottom-width: 2px; border-radius: 5px; background: var(--superficie); color: var(--tinta); }
 
 /* Encerramento */
 .duas { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; flex: 1; }
 .painel { min-width: 0; }
 .hipoteses, .conclusoes { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.hipoteses li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--linha); }
-.cod { font: 700 1.1rem var(--f-titulo); color: var(--cereja); }
+.hipoteses li { display: grid; grid-template-columns: 44px 1fr; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--sec) 9%, var(--superficie)); border: 1px solid color-mix(in srgb, var(--sec) 25%, var(--linha)); }
+.cod { font: 700 1.15rem var(--f-titulo); color: var(--sec); }
 .hipoteses small { display: block; color: var(--suave); font-size: .8rem; }
-.conclusoes li { padding-left: 18px; position: relative; }
-.conclusoes li::before { content: ""; position: absolute; left: 0; top: .6em; width: 7px; height: 7px; border-radius: 50%; background: var(--salvia); }
+.conclusoes li { padding-left: 20px; position: relative; }
+.conclusoes li::before { content: ""; position: absolute; left: 0; top: .55em; width: 9px; height: 9px; border-radius: 3px; background: var(--sec); transform: rotate(45deg); }
 
-/* Telas menores: índice vira bloco no topo e o slide cresce com o conteúdo */
+/* Modo apresentação (tela cheia): sem índice, slide maior */
+.app:fullscreen { grid-template-columns: minmax(0, 1fr); overflow-y: auto; }
+.app:fullscreen .indice, .app:fullscreen #alternar-indice { display: none; }
+.app:fullscreen .barra, .app:fullscreen .slides { max-width: 1600px; }
+.app:fullscreen .palco { justify-content: center; min-height: 100vh; }
+
 @media (max-width: 1100px) {
   .js .slide { aspect-ratio: auto; }
   .codigo pre { max-height: 60vh; }
 }
 @media (max-width: 860px) {
-  .app { grid-template-columns: minmax(0, 1fr); align-content: start; }
+  .app, .app.recolhido { grid-template-columns: minmax(0, 1fr); align-content: start; }
   .indice { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--linha); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-  .marca-sub { margin-bottom: 12px; }
-  .abrir-indice { display: inline-flex; font: 600 .9rem var(--f-texto); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--linha); background: var(--bg); color: var(--tinta); cursor: pointer; margin-bottom: 14px; }
-  .indice:not(.aberto) > ol { display: none; }
+  .app.recolhido .indice { display: none; }
   .palco { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .barra { grid-template-columns: 1fr auto; }
+  .trilha { grid-column: 1 / -1; grid-row: 2; }
   .grade, .duas { grid-template-columns: minmax(0, 1fr); }
+  .rotulo-btn { display: none; }
 }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 </head>
 <body>
-<div class="app">
-  <nav class="indice" aria-label="Índice dos slides">
+<div class="app" data-secao="abertura">
+  <nav class="indice" id="lista-indice" aria-label="Índice dos slides">
     <p class="marca">Coffee &amp; Health</p>
     <p class="marca-sub">Projeto A3 · o código, slide a slide</p>
-    <button type="button" class="abrir-indice" id="abrir-indice" aria-expanded="false" aria-controls="lista-indice">Índice</button>
-    <div class="progresso" aria-hidden="true"><span></span></div>
-    <ol id="lista-indice"><li class="grupo"><span class="grupo-nome">Abertura</span><ol><li><a href="#slide-1" data-n="1"><span class="num">01</span>Coffee &amp; Health</a></li><li><a href="#slide-2" data-n="2"><span class="num">02</span>Bibliotecas e configuração</a></li></ol></li><li class="grupo"><span class="grupo-nome">Preparação dos dados</span><ol><li><a href="#slide-3" data-n="3"><span class="num">03</span>Q1 · Carga e conhecimento do dataset</a></li><li><a href="#slide-4" data-n="4"><span class="num">04</span>Q2 · Valores ausentes e duplicados</a></li><li><a href="#slide-5" data-n="5"><span class="num">05</span>ETL · Transformação dos dados</a></li></ol></li><li class="grupo"><span class="grupo-nome">Análise exploratória</span><ol><li><a href="#slide-6" data-n="6"><span class="num">06</span>Q3 · Perfil das pessoas</a></li><li><a href="#slide-7" data-n="7"><span class="num">07</span>Q4 · Consumo de café</a></li><li><a href="#slide-8" data-n="8"><span class="num">08</span>Q5 · Café e cafeína</a></li><li><a href="#slide-9" data-n="9"><span class="num">09</span>Q6 · Consumo de café e sono</a></li><li><a href="#slide-10" data-n="10"><span class="num">10</span>Q7 · Sono e estresse</a></li><li><a href="#slide-11" data-n="11"><span class="num">11</span>Q8 · Árvore de decisão</a></li><li><a href="#slide-12" data-n="12"><span class="num">12</span>Q9 · Consumo, sono e estresse juntos</a></li><li><a href="#slide-13" data-n="13"><span class="num">13</span>Q10 · Associações com problemas de saúde</a></li></ol></li><li class="grupo"><span class="grupo-nome">LGPD e ética</span><ol><li><a href="#slide-14" data-n="14"><span class="num">14</span>LGPD · Medindo o risco de reidentificação</a></li><li><a href="#slide-15" data-n="15"><span class="num">15</span>LGPD · Generalização e supressão</a></li></ol></li><li class="grupo"><span class="grupo-nome">Encerramento</span><ol><li><a href="#slide-16" data-n="16"><span class="num">16</span>Hipóteses e conclusões</a></li></ol></li></ol>
+    <ol><li class="grupo" data-secao="abertura"><span class="grupo-nome"><span class="ponto"></span>Abertura</span><ol><li><a href="#slide-1" data-n="1"><span class="num">01</span><span>Coffee &amp; Health</span></a></li><li><a href="#slide-2" data-n="2"><span class="num">02</span><span>Bibliotecas e configuração</span></a></li></ol></li><li class="grupo" data-secao="preparacao"><span class="grupo-nome"><span class="ponto"></span>Preparação dos dados</span><ol><li><a href="#slide-3" data-n="3"><span class="num">03</span><span>Q1 · Carga e conhecimento do dataset</span></a></li><li><a href="#slide-4" data-n="4"><span class="num">04</span><span>Q2 · Valores ausentes e duplicados</span></a></li><li><a href="#slide-5" data-n="5"><span class="num">05</span><span>ETL · Transformação dos dados</span></a></li></ol></li><li class="grupo" data-secao="eda"><span class="grupo-nome"><span class="ponto"></span>Análise exploratória</span><ol><li><a href="#slide-6" data-n="6"><span class="num">06</span><span>Q3 · Perfil das pessoas</span></a></li><li><a href="#slide-7" data-n="7"><span class="num">07</span><span>Q4 · Consumo de café</span></a></li><li><a href="#slide-8" data-n="8"><span class="num">08</span><span>Q5 · Café e cafeína</span></a></li><li><a href="#slide-9" data-n="9"><span class="num">09</span><span>Q6 · Consumo de café e sono</span></a></li><li><a href="#slide-10" data-n="10"><span class="num">10</span><span>Q7 · Sono e estresse</span></a></li><li><a href="#slide-11" data-n="11"><span class="num">11</span><span>Q8 · Árvore de decisão</span></a></li><li><a href="#slide-12" data-n="12"><span class="num">12</span><span>Q9 · Consumo, sono e estresse juntos</span></a></li><li><a href="#slide-13" data-n="13"><span class="num">13</span><span>Q10 · Associações com problemas de saúde</span></a></li></ol></li><li class="grupo" data-secao="lgpd"><span class="grupo-nome"><span class="ponto"></span>LGPD e ética</span><ol><li><a href="#slide-14" data-n="14"><span class="num">14</span><span>LGPD · Medindo o risco de reidentificação</span></a></li><li><a href="#slide-15" data-n="15"><span class="num">15</span><span>LGPD · Generalização e supressão</span></a></li></ol></li><li class="grupo" data-secao="encerramento"><span class="grupo-nome"><span class="ponto"></span>Encerramento</span><ol><li><a href="#slide-16" data-n="16"><span class="num">16</span><span>Hipóteses e conclusões</span></a></li></ol></li></ol>
   </nav>
   <main class="palco">
     <div class="barra">
-      <span class="contador" id="contador" aria-live="polite">01 / 16</span>
+      <div class="barra-esq">
+        <button type="button" class="btn" id="alternar-indice" aria-controls="lista-indice" aria-expanded="true" title="Recolher ou mostrar o índice (I)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg><span class="rotulo-btn">Recolher índice</span></button>
+        <span class="contador" id="contador" aria-live="polite"><b>01</b> / 16</span>
+      </div>
+      <div class="trilha" aria-label="Progresso da apresentação"><button type="button" class="seg" data-secao="abertura" data-n="1" aria-label="Ir para o slide 1: Coffee &amp; Health" title="01 · Coffee &amp; Health"></button><button type="button" class="seg" data-secao="abertura" data-n="2" aria-label="Ir para o slide 2: Bibliotecas e configuração" title="02 · Bibliotecas e configuração"></button><button type="button" class="seg" data-secao="preparacao" data-n="3" aria-label="Ir para o slide 3: Q1 · Carga e conhecimento do dataset" title="03 · Q1 · Carga e conhecimento do dataset"></button><button type="button" class="seg" data-secao="preparacao" data-n="4" aria-label="Ir para o slide 4: Q2 · Valores ausentes e duplicados" title="04 · Q2 · Valores ausentes e duplicados"></button><button type="button" class="seg" data-secao="preparacao" data-n="5" aria-label="Ir para o slide 5: ETL · Transformação dos dados" title="05 · ETL · Transformação dos dados"></button><button type="button" class="seg" data-secao="eda" data-n="6" aria-label="Ir para o slide 6: Q3 · Perfil das pessoas" title="06 · Q3 · Perfil das pessoas"></button><button type="button" class="seg" data-secao="eda" data-n="7" aria-label="Ir para o slide 7: Q4 · Consumo de café" title="07 · Q4 · Consumo de café"></button><button type="button" class="seg" data-secao="eda" data-n="8" aria-label="Ir para o slide 8: Q5 · Café e cafeína" title="08 · Q5 · Café e cafeína"></button><button type="button" class="seg" data-secao="eda" data-n="9" aria-label="Ir para o slide 9: Q6 · Consumo de café e sono" title="09 · Q6 · Consumo de café e sono"></button><button type="button" class="seg" data-secao="eda" data-n="10" aria-label="Ir para o slide 10: Q7 · Sono e estresse" title="10 · Q7 · Sono e estresse"></button><button type="button" class="seg" data-secao="eda" data-n="11" aria-label="Ir para o slide 11: Q8 · Árvore de decisão" title="11 · Q8 · Árvore de decisão"></button><button type="button" class="seg" data-secao="eda" data-n="12" aria-label="Ir para o slide 12: Q9 · Consumo, sono e estresse juntos" title="12 · Q9 · Consumo, sono e estresse juntos"></button><button type="button" class="seg" data-secao="eda" data-n="13" aria-label="Ir para o slide 13: Q10 · Associações com problemas de saúde" title="13 · Q10 · Associações com problemas de saúde"></button><button type="button" class="seg" data-secao="lgpd" data-n="14" aria-label="Ir para o slide 14: LGPD · Medindo o risco de reidentificação" title="14 · LGPD · Medindo o risco de reidentificação"></button><button type="button" class="seg" data-secao="lgpd" data-n="15" aria-label="Ir para o slide 15: LGPD · Generalização e supressão" title="15 · LGPD · Generalização e supressão"></button><button type="button" class="seg" data-secao="encerramento" data-n="16" aria-label="Ir para o slide 16: Hipóteses e conclusões" title="16 · Hipóteses e conclusões"></button></div>
       <div class="botoes">
-        <button type="button" id="anterior">← Anterior</button>
-        <button type="button" id="proximo">Próximo →</button>
+        <button type="button" class="btn" id="apresentar" title="Tela cheia (F)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg><span class="rotulo-btn">Apresentar</span></button>
+        <button type="button" class="btn" id="anterior" aria-label="Slide anterior">←</button>
+        <button type="button" class="btn primario" id="proximo" aria-label="Próximo slide">Próximo →</button>
       </div>
     </div>
     <div class="slides">
-    <section class="slide" id="slide-1" aria-label="Slide 1 de 16: Coffee &amp; Health">
+    <section class="slide" id="slide-1" data-secao="abertura" aria-label="Slide 1 de 16: Coffee &amp; Health">
       <div class="capa">
-        <p class="eyebrow">Projeto A3 · Análise de Dados e Big Data · 2026/2</p>
-        <h1>Coffee &amp; Health</h1>
+        <p class="eyebrow"><span class="ponto"></span>Projeto A3 · Análise de Dados e Big Data · 2026/2</p>
+        <h1><span class="grad">Coffee &amp; Health</span></h1>
         <p class="lede">O código da análise exploratória, slide a slide. Cada trecho do notebook aparece ao lado da explicação do que ele faz e do resultado que produz. Os trechos foram resumidos; o código completo está em <code>notebooks/analise_coffee_health.ipynb</code>.</p>
         <dl class="fatos">
           <div><dt>Registros</dt><dd>10.000</dd></div>
@@ -160,15 +206,16 @@ kbd { font-size: .8rem; padding: 2px 7px; border: 1px solid var(--linha); border
           <div><dt>Questões</dt><dd>Q1–Q10</dd></div>
           <div><dt>Linguagem</dt><dd>Python</dd></div>
         </dl>
-        <p class="dica">Use <kbd>←</kbd> <kbd>→</kbd> ou o índice para navegar.</p>
+        <ul class="legenda" aria-label="Cores das seções"><li data-secao="abertura"><span class="ponto"></span>Abertura</li><li data-secao="preparacao"><span class="ponto"></span>Preparação dos dados</li><li data-secao="eda"><span class="ponto"></span>Análise exploratória</li><li data-secao="lgpd"><span class="ponto"></span>LGPD e ética</li><li data-secao="encerramento"><span class="ponto"></span>Encerramento</li></ul>
+        <p class="dica"><kbd>←</kbd> <kbd>→</kbd> navegam · <kbd>I</kbd> recolhe o índice · <kbd>F</kbd> apresenta em tela cheia</p>
       </div>
     </section>
-    <section class="slide" id="slide-2" aria-label="Slide 2 de 16: Bibliotecas e configuração">
-      <p class="eyebrow">Abertura</p>
+    <section class="slide" id="slide-2" data-secao="abertura" aria-label="Slide 2 de 16: Bibliotecas e configuração">
+      <p class="eyebrow"><span class="ponto"></span>Abertura</p>
       <h2>Bibliotecas e configuração</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 2 · Configuração</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 2 · Configuração</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">RAIZ = Path.cwd().parent if Path.cwd().name == &quot;notebooks&quot; else Path.cwd()
 load_dotenv(RAIZ / &quot;.env&quot;)
 
@@ -184,16 +231,16 @@ K_ANONIMATO = int(os.getenv(&quot;K_ANONIMATO&quot;, &quot;5&quot;))</code></pre
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span><code>RAIZ</code> encontra a pasta do repositório, seja o notebook aberto em <code>notebooks/</code> ou na raiz.</span></li><li><span><code>load_dotenv</code> lê o arquivo <code>.env</code>, onde ficam os valores fixos do projeto (regra do CLAUDE.md: nada de números mágicos no código).</span></li><li><span><code>os.getenv(nome, padrão)</code> busca cada valor; o segundo argumento só é usado se o <code>.env</code> não existir.</span></li><li><span><code>int()</code> e <code>float()</code> convertem o texto lido para número.</span></li></ol>
-          <div class="resultado"><strong>18</strong><span>valores configuráveis no .env, de semente aleatória a faixas etárias</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>18</strong><span>valores configuráveis no .env, de semente aleatória a faixas etárias</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-3" aria-label="Slide 3 de 16: Q1 · Carga e conhecimento do dataset">
-      <p class="eyebrow">Preparação dos dados</p>
+    <section class="slide" id="slide-3" data-secao="preparacao" aria-label="Slide 3 de 16: Q1 · Carga e conhecimento do dataset">
+      <p class="eyebrow"><span class="ponto"></span>Preparação dos dados</p>
       <h2>Q1 · Carga e conhecimento do dataset</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seções 3 e 4 · Carga e Q1</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seções 3 e 4 · Carga e Q1</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">if not DATA_PATH.exists():
     raise FileNotFoundError(
         f&quot;CSV não encontrado em {DATA_PATH}. &quot;
@@ -210,16 +257,16 @@ df.describe()</code></pre>
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span>Antes de ler, o código confere se o CSV existe e explica como corrigir o caminho se não existir.</span></li><li><span><code>df_original</code> guarda os dados como vieram; <code>df</code> é a cópia que recebe as transformações. O CSV nunca é regravado.</span></li><li><span><code>df.shape</code> devolve a tupla (linhas, colunas).</span></li><li><span><code>dtypes</code> mostra o tipo de cada coluna, e <code>describe()</code> resume as numéricas (média, desvio, quartis).</span></li></ol>
-          <div class="resultado"><strong>10.000 × 16</strong><span>registros e colunas; 5 inteiras, 5 decimais e 6 de texto</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>10.000 × 16</strong><span>registros e colunas; 5 inteiras, 5 decimais e 6 de texto</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-4" aria-label="Slide 4 de 16: Q2 · Valores ausentes e duplicados">
-      <p class="eyebrow">Preparação dos dados</p>
+    <section class="slide" id="slide-4" data-secao="preparacao" aria-label="Slide 4 de 16: Q2 · Valores ausentes e duplicados">
+      <p class="eyebrow"><span class="ponto"></span>Preparação dos dados</p>
       <h2>Q2 · Valores ausentes e duplicados</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 5 · Q2</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 5 · Q2</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">ausentes = pd.DataFrame({
     &quot;Valores ausentes&quot;: df_original.isnull().sum(),
     &quot;% do total&quot;: df_original.isnull().mean() * 100,
@@ -232,16 +279,16 @@ ids_repetidos = df_original[&quot;ID&quot;].duplicated().sum()</code></pre>
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span><code>isnull()</code> marca <code>True</code> onde falta valor; <code>.sum()</code> conta por coluna e <code>.mean()</code> dá a proporção.</span></li><li><span>No CSV, os ausentes de <code>Health_Issues</code> estão escritos como <code>None</code>, e o <code>read_csv</code> os converte em <code>NaN</code>.</span></li><li><span>São três testes de duplicidade: linha inteira repetida, linha repetida ignorando o ID e ID repetido.</span></li></ol>
-          <div class="resultado"><strong>59,41%</strong><span>de Health_Issues ausente (5.941 registros) e nenhum duplicado</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>59,41%</strong><span>de Health_Issues ausente (5.941 registros) e nenhum duplicado</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-5" aria-label="Slide 5 de 16: ETL · Transformação dos dados">
-      <p class="eyebrow">Preparação dos dados</p>
+    <section class="slide" id="slide-5" data-secao="preparacao" aria-label="Slide 5 de 16: ETL · Transformação dos dados">
+      <p class="eyebrow"><span class="ponto"></span>Preparação dos dados</p>
       <h2>ETL · Transformação dos dados</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 5 · Transformação</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 5 · Transformação</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">ROTULO_NAO_INFORMADO = &quot;Não informado&quot;
 ORDEM_SLEEP_QUALITY = [&quot;Poor&quot;, &quot;Fair&quot;, &quot;Good&quot;, &quot;Excellent&quot;]
 
@@ -256,16 +303,16 @@ df = df.drop(columns=&quot;ID&quot;).reset_index(drop=True)</code></pre>
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span><b>Extração:</b> parte sempre de uma cópia de <code>df_original</code>.</span></li><li><span><b>Duplicados:</b> <code>drop_duplicates()</code> remove linhas repetidas, se houver.</span></li><li><span><b>Ausentes:</b> <code>fillna</code> troca o vazio por "Não informado", porque ausência não significa "sem problema de saúde".</span></li><li><span><b>Ordinais:</b> <code>pd.Categorical(..., ordered=True)</code> faz o pandas entender que Poor &lt; Fair &lt; Good &lt; Excellent.</span></li><li><span><b>Anonimização:</b> o <code>ID</code> sai, porque identifica o registro e não entra nas análises.</span></li></ol>
-          <div class="resultado"><strong>10.000 × 15</strong><span>DataFrame limpo, sem ausentes e sem o ID</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>10.000 × 15</strong><span>DataFrame limpo, sem ausentes e sem o ID</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-6" aria-label="Slide 6 de 16: Q3 · Perfil das pessoas">
-      <p class="eyebrow">Análise exploratória</p>
+    <section class="slide" id="slide-6" data-secao="eda" aria-label="Slide 6 de 16: Q3 · Perfil das pessoas">
+      <p class="eyebrow"><span class="ponto"></span>Análise exploratória</p>
       <h2>Q3 · Perfil das pessoas</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 6 · Q3</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 6 · Q3</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">contagem_genero = df[&quot;Gender&quot;].value_counts()
 percentual_genero = df[&quot;Gender&quot;].value_counts(normalize=True) * 100
 
@@ -278,16 +325,16 @@ idade_por_genero = (
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span><code>value_counts()</code> conta quantas vezes cada gênero aparece; com <code>normalize=True</code>, devolve a proporção.</span></li><li><span><code>groupby("Gender")</code> separa os registros por gênero, e <code>agg</code> calcula várias estatísticas de idade de uma vez.</span></li><li><span>Média e mediana lado a lado mostram se valores extremos puxam a média.</span></li></ol>
-          <div class="resultado"><strong>50% · 48% · 2%</strong><span>Female, Male e Other; idade média entre 34,5 e 35 anos</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>50% · 48% · 2%</strong><span>Female, Male e Other; idade média entre 34,5 e 35 anos</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-7" aria-label="Slide 7 de 16: Q4 · Consumo de café">
-      <p class="eyebrow">Análise exploratória</p>
+    <section class="slide" id="slide-7" data-secao="eda" aria-label="Slide 7 de 16: Q4 · Consumo de café">
+      <p class="eyebrow"><span class="ponto"></span>Análise exploratória</p>
       <h2>Q4 · Consumo de café</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 6 · Q4</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 6 · Q4</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">registros_zero = df[&quot;Coffee_Intake&quot;].eq(0).sum()
 
 consumo_por_pais = (
@@ -302,16 +349,16 @@ top_paises = consumo_por_pais.head(TOP_N_PAISES)</code></pre>
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span><code>eq(0).sum()</code> conta as pessoas com consumo zero, que puxam a média para baixo.</span></li><li><span>O <code>groupby("Country")</code> calcula o consumo médio de cada um dos 20 países.</span></li><li><span><code>sort_values(..., ascending=False)</code> ordena do maior para o menor, e <code>head(TOP_N_PAISES)</code> pega os 5 primeiros (valor vindo do <code>.env</code>).</span></li></ol>
-          <div class="resultado"><strong>2,51</strong><span>consumo médio (de 0 a 8,2); Spain lidera com 2,60</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>2,51</strong><span>consumo médio (de 0 a 8,2); Spain lidera com 2,60</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-8" aria-label="Slide 8 de 16: Q5 · Café e cafeína">
-      <p class="eyebrow">Análise exploratória</p>
+    <section class="slide" id="slide-8" data-secao="eda" aria-label="Slide 8 de 16: Q5 · Café e cafeína">
+      <p class="eyebrow"><span class="ponto"></span>Análise exploratória</p>
       <h2>Q5 · Café e cafeína</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 6 · Q5</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 6 · Q5</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">correlacao_cafe_cafeina = df[&quot;Coffee_Intake&quot;].corr(df[&quot;Caffeine_mg&quot;])
 
 consumo_positivo = df[df[&quot;Coffee_Intake&quot;] &gt; 0]
@@ -324,16 +371,16 @@ sns.regplot(data=df, x=&quot;Coffee_Intake&quot;, y=&quot;Caffeine_mg&quot;, ax=
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span><code>corr()</code> calcula a correlação de Pearson, que vai de −1 a 1; perto de 1 indica uma relação linear crescente.</span></li><li><span>O filtro <code>&gt; 0</code> evita divisão por zero ao calcular quantos mg de cafeína há por unidade de café.</span></li><li><span><code>regplot</code> desenha o gráfico de dispersão com a reta de tendência.</span></li></ol>
-          <div class="resultado"><strong>r = 0,9998</strong><span>relação quase perfeita: cerca de 95 mg por unidade de café</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>r = 0,9998</strong><span>relação quase perfeita: cerca de 95 mg por unidade de café</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-9" aria-label="Slide 9 de 16: Q6 · Consumo de café e sono">
-      <p class="eyebrow">Análise exploratória</p>
+    <section class="slide" id="slide-9" data-secao="eda" aria-label="Slide 9 de 16: Q6 · Consumo de café e sono">
+      <p class="eyebrow"><span class="ponto"></span>Análise exploratória</p>
       <h2>Q6 · Consumo de café e sono</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 6 · Q6</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 6 · Q6</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">cafe_por_sono = (
     df.groupby(&quot;Sleep_Quality&quot;, observed=True)[&quot;Coffee_Intake&quot;]
     .agg([&quot;count&quot;, &quot;mean&quot;, &quot;median&quot;])
@@ -351,16 +398,16 @@ dif_poor_excellent = (
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span>Como <code>Sleep_Quality</code> virou categoria ordenada no ETL, o resultado já sai na ordem Poor → Excellent.</span></li><li><span><code>observed=True</code> mostra só as categorias que existem nos dados.</span></li><li><span><code>.loc[linha, coluna]</code> pega um valor da tabela pelo nome, para calcular a diferença entre os extremos.</span></li></ol>
-          <div class="resultado"><strong>+0,93</strong><span>de café no grupo Poor em relação ao Excellent (2,98 × 2,05)</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>+0,93</strong><span>de café no grupo Poor em relação ao Excellent (2,98 × 2,05)</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-10" aria-label="Slide 10 de 16: Q7 · Sono e estresse">
-      <p class="eyebrow">Análise exploratória</p>
+    <section class="slide" id="slide-10" data-secao="eda" aria-label="Slide 10 de 16: Q7 · Sono e estresse">
+      <p class="eyebrow"><span class="ponto"></span>Análise exploratória</p>
       <h2>Q7 · Sono e estresse</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 6 · Q7</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 6 · Q7</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">sono_por_estresse = (
     df.groupby(&quot;Stress_Level&quot;, observed=True)[&quot;Sleep_Hours&quot;]
     .agg([&quot;count&quot;, &quot;mean&quot;, &quot;median&quot;, &quot;std&quot;, &quot;min&quot;, &quot;max&quot;])
@@ -372,16 +419,16 @@ sns.boxplot(data=df, x=&quot;Stress_Level&quot;, y=&quot;Sleep_Hours&quot;, ax=a
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span>É o mesmo padrão de <code>groupby</code> + <code>agg</code>, agora com horas de sono por nível de estresse.</span></li><li><span>Mínimo e máximo de cada grupo mostram se as faixas se sobrepõem.</span></li><li><span>O <code>boxplot</code> exibe mediana, quartis e extremos de cada nível no mesmo gráfico.</span></li></ol>
-          <div class="resultado"><strong>−2,80 h</strong><span>de sono de Low (7,25 h) para High (4,45 h)</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>−2,80 h</strong><span>de sono de Low (7,25 h) para High (4,45 h)</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-11" aria-label="Slide 11 de 16: Q8 · Árvore de decisão">
-      <p class="eyebrow">Análise exploratória</p>
+    <section class="slide" id="slide-11" data-secao="eda" aria-label="Slide 11 de 16: Q8 · Árvore de decisão">
+      <p class="eyebrow"><span class="ponto"></span>Análise exploratória</p>
       <h2>Q8 · Árvore de decisão</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 6 · Q8</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 6 · Q8</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">X = df[ATRIBUTOS_Q8]
 y = df[ALVO_Q8]  # &quot;Sleep_Quality&quot;
 
@@ -398,16 +445,16 @@ accuracy_score(y_test, modelo_podado.predict(X_test))</code></pre>
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span><code>X</code> são os seis atributos pedidos (sem o ID) e <code>y</code> é a classe que o modelo deve prever.</span></li><li><span><code>train_test_split</code> separa 80% para treino e 20% para teste; <code>stratify=y</code> mantém a proporção das classes nos dois.</span></li><li><span><code>max_depth</code> limita a profundidade da árvore para evitar overfitting (sem limite: 100% no treino e 38,9% no teste).</span></li><li><span>A acurácia é comparada com a baseline de prever sempre a classe mais comum.</span></li></ol>
-          <div class="resultado"><strong>56,4%</strong><span>de acurácia, praticamente igual à baseline de 56,37%</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>56,4%</strong><span>de acurácia, praticamente igual à baseline de 56,37%</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-12" aria-label="Slide 12 de 16: Q9 · Consumo, sono e estresse juntos">
-      <p class="eyebrow">Análise exploratória</p>
+    <section class="slide" id="slide-12" data-secao="eda" aria-label="Slide 12 de 16: Q9 · Consumo, sono e estresse juntos">
+      <p class="eyebrow"><span class="ponto"></span>Análise exploratória</p>
       <h2>Q9 · Consumo, sono e estresse juntos</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 6 · Q9</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 6 · Q9</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">analise_conjunta = (
     df.groupby([&quot;Stress_Level&quot;, &quot;Sleep_Quality&quot;], observed=True)
     .agg(
@@ -423,16 +470,16 @@ accuracy_score(y_test, modelo_podado.predict(X_test))</code></pre>
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span>Agrupar por <b>duas</b> colunas cria uma linha para cada combinação de estresse e qualidade do sono.</span></li><li><span><code>agg(nome=(coluna, função))</code> dá nome a cada resultado; o <code>**{...}</code> permite nomes com espaço e acento.</span></li><li><span>Com <code>observed=True</code>, só aparecem as combinações que existem nos dados.</span></li></ol>
-          <div class="resultado"><strong>4 de 12</strong><span>combinações existem; High × Poor tem o maior consumo (2,98)</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>4 de 12</strong><span>combinações existem; High × Poor tem o maior consumo (2,98)</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-13" aria-label="Slide 13 de 16: Q10 · Associações com problemas de saúde">
-      <p class="eyebrow">Análise exploratória</p>
+    <section class="slide" id="slide-13" data-secao="eda" aria-label="Slide 13 de 16: Q10 · Associações com problemas de saúde">
+      <p class="eyebrow"><span class="ponto"></span>Análise exploratória</p>
       <h2>Q10 · Associações com problemas de saúde</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 6 · Q10</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 6 · Q10</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">df_saude = df[df[&quot;Health_Issues&quot;] != ROTULO_NAO_INFORMADO].copy()
 
 resumo_saude = (
@@ -450,16 +497,16 @@ resumo_saude = (
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span>O filtro mantém só os 4.059 registros com <code>Health_Issues</code> preenchido, como a questão pede.</span></li><li><span>Como <code>Smoking</code> vale 0 ou 1, a média é a proporção de fumantes; vezes 100, vira percentual.</span></li><li><span><code>lambda s: ...</code> é uma função curta, criada na hora, para esse cálculo.</span></li></ol>
-          <div class="resultado"><strong>24,4 → 32,0</strong><span>de IMC de Mild a Severe; o café não acompanha, então não há como afirmar causa</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>24,4 → 32,0</strong><span>de IMC de Mild a Severe; o café não acompanha, então não há como afirmar causa</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-14" aria-label="Slide 14 de 16: LGPD · Medindo o risco de reidentificação">
-      <p class="eyebrow">LGPD e ética</p>
+    <section class="slide" id="slide-14" data-secao="lgpd" aria-label="Slide 14 de 16: LGPD · Medindo o risco de reidentificação">
+      <p class="eyebrow"><span class="ponto"></span>LGPD e ética</p>
       <h2>LGPD · Medindo o risco de reidentificação</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 7 · Risco</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 7 · Risco</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">QUASE_IDENTIFICADORES = [&quot;Age&quot;, &quot;Gender&quot;, &quot;Country&quot;, &quot;Occupation&quot;]
 
 def medir_risco(dados, colunas, k=K_ANONIMATO):
@@ -475,16 +522,16 @@ def medir_risco(dados, colunas, k=K_ANONIMATO):
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span>Quase-identificadores não identificam ninguém sozinhos, mas combinados podem identificar.</span></li><li><span><code>groupby(...).size()</code> conta quantas pessoas têm cada combinação.</span></li><li><span><b>k-anonimato:</b> todo grupo precisa ter pelo menos <code>K_ANONIMATO</code> pessoas; um grupo de 1 aponta direto para alguém.</span></li><li><span>A função é reutilizada para comparar o antes e o depois da anonimização.</span></li></ol>
-          <div class="resultado"><strong>89,1%</strong><span>dos registros em grupos com menos de 5 pessoas, usando a idade exata</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>89,1%</strong><span>dos registros em grupos com menos de 5 pessoas, usando a idade exata</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-15" aria-label="Slide 15 de 16: LGPD · Generalização e supressão">
-      <p class="eyebrow">LGPD e ética</p>
+    <section class="slide" id="slide-15" data-secao="lgpd" aria-label="Slide 15 de 16: LGPD · Generalização e supressão">
+      <p class="eyebrow"><span class="ponto"></span>LGPD e ética</p>
       <h2>LGPD · Generalização e supressão</h2>
       <div class="grade">
         <figure class="codigo">
-          <figcaption><span>analise_coffee_health.ipynb · Seção 7 · Proteção</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
+          <figcaption><span class="janela" aria-hidden="true"><i></i><i></i><i></i></span><span class="arquivo">analise_coffee_health.ipynb · Seção 7 · Proteção</span><button type="button" class="copiar" aria-label="Copiar código">Copiar</button></figcaption>
           <pre><code class="language-python">df_generalizado = df.copy()
 df_generalizado[&quot;Faixa_Etaria&quot;] = pd.cut(
     df_generalizado[&quot;Age&quot;], bins=FAIXAS_ETARIAS,
@@ -500,12 +547,12 @@ df_compartilhavel = df_generalizado[tamanho_do_grupo &gt;= K_ANONIMATO]</code></
         <div class="explica">
           <h3>O que o código faz</h3>
           <ol><li><span><b>Generalização:</b> <code>pd.cut</code> troca a idade exata por faixas (18–29, 30–44 e 45–80), definidas no <code>.env</code>.</span></li><li><span><code>transform("size")</code> escreve em cada linha o tamanho do grupo a que ela pertence.</span></li><li><span><b>Supressão:</b> o filtro descarta quem continua em grupo menor que k.</span></li><li><span>O <code>df</code> original segue intacto para as análises; só <code>df_compartilhavel</code> sairia do ambiente.</span></li></ol>
-          <div class="resultado"><strong>0%</strong><span>em risco depois da proteção, mantendo 97,6% dos registros</span></div>
+          <div class="resultado"><span class="rotulo-resultado">Resultado</span><strong>0%</strong><span>em risco depois da proteção, mantendo 97,6% dos registros</span></div>
         </div>
       </div>
     </section>
-    <section class="slide" id="slide-16" aria-label="Slide 16 de 16: Hipóteses e conclusões">
-      <p class="eyebrow">Encerramento</p>
+    <section class="slide" id="slide-16" data-secao="encerramento" aria-label="Slide 16 de 16: Hipóteses e conclusões">
+      <p class="eyebrow"><span class="ponto"></span>Encerramento</p>
       <h2>Hipóteses e conclusões</h2>
       <div class="duas">
         <div class="painel"><h3>Hipóteses do grupo</h3><ul class="hipoteses"><li><span class="cod">H1</span><span>Fumantes têm frequência cardíaca maior?<small>Resultado: em validação no notebook</small></span></li><li><span class="cod">H2</span><span>Quem faz mais atividade física dorme mais?<small>Resultado: em validação no notebook</small></span></li><li><span class="cod">H3</span><span>Alguma ocupação consome mais café?<small>Resultado: em validação no notebook</small></span></li><li><span class="cod">H4</span><span>Quem consome álcool tem pior qualidade de sono?<small>Resultado: em validação no notebook</small></span></li></ul></div>
@@ -518,20 +565,37 @@ df_compartilhavel = df_generalizado[tamanho_do_grupo &gt;= K_ANONIMATO]</code></
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
 document.documentElement.classList.add("js");
+const app = document.querySelector(".app");
 const slides = [...document.querySelectorAll(".slide")];
 const links = [...document.querySelectorAll(".indice a")];
+const segmentos = [...document.querySelectorAll(".seg")];
 const anterior = document.getElementById("anterior");
 const proximo = document.getElementById("proximo");
 const contador = document.getElementById("contador");
-const barra = document.querySelector(".progresso span");
+const botaoIndice = document.getElementById("alternar-indice");
+const botaoApresentar = document.getElementById("apresentar");
+const celular = matchMedia("(max-width: 860px)");
 let atual = 0;
 
+function guardar(chave, valor) { try { localStorage.setItem(chave, valor); } catch {} }
+function ler(chave) { try { return localStorage.getItem(chave); } catch { return null; } }
+
 function mostrar(i, atualizarHash = true) {
-  atual = Math.max(0, Math.min(slides.length - 1, i));
-  slides.forEach((s, j) => s.classList.toggle("ativo", j === atual));
+  const destino = Math.max(0, Math.min(slides.length - 1, i));
+  const voltando = destino < atual;
+  atual = destino;
+  slides.forEach((s, j) => {
+    s.classList.toggle("ativo", j === atual);
+    s.classList.toggle("voltando", j === atual && voltando);
+  });
+  const secao = slides[atual].dataset.secao;
+  app.dataset.secao = secao;
   links.forEach((a, j) => a.setAttribute("aria-current", j === atual ? "true" : "false"));
-  contador.textContent = `${String(atual + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
-  barra.style.width = `${((atual + 1) / slides.length) * 100}%`;
+  segmentos.forEach((seg, j) => {
+    seg.classList.toggle("atual", j === atual);
+    seg.classList.toggle("feito", j < atual);
+  });
+  contador.innerHTML = `<b>${String(atual + 1).padStart(2, "0")}</b> / ${String(slides.length).padStart(2, "0")}`;
   anterior.disabled = atual === 0;
   proximo.disabled = atual === slides.length - 1;
   const nav = document.querySelector(".indice");
@@ -548,25 +612,44 @@ function lerHash() {
   return Number.isInteger(n) ? n - 1 : 0;
 }
 
-const botaoIndice = document.getElementById("abrir-indice");
-botaoIndice.addEventListener("click", () => {
-  const aberto = document.querySelector(".indice").classList.toggle("aberto");
-  botaoIndice.setAttribute("aria-expanded", String(aberto));
+function definirIndice(recolhido, salvar = true) {
+  app.classList.toggle("recolhido", recolhido);
+  botaoIndice.setAttribute("aria-expanded", String(!recolhido));
+  botaoIndice.querySelector(".rotulo-btn").textContent = recolhido ? "Mostrar índice" : "Recolher índice";
+  if (salvar && !celular.matches) guardar("indiceRecolhido", recolhido ? "1" : "0");
+}
+
+async function alternarApresentacao() {
+  try {
+    if (document.fullscreenElement) await document.exitFullscreen();
+    else await app.requestFullscreen();
+  } catch {
+    definirIndice(true, false);
+  }
+}
+
+botaoIndice.addEventListener("click", () => definirIndice(!app.classList.contains("recolhido")));
+botaoApresentar.addEventListener("click", alternarApresentacao);
+document.addEventListener("fullscreenchange", () => {
+  botaoApresentar.querySelector(".rotulo-btn").textContent = document.fullscreenElement ? "Sair" : "Apresentar";
 });
 links.forEach((a, j) => a.addEventListener("click", (e) => {
   e.preventDefault(); mostrar(j);
-  document.querySelector(".indice").classList.remove("aberto");
-  botaoIndice.setAttribute("aria-expanded", "false");
+  if (celular.matches) definirIndice(true, false);
 }));
+segmentos.forEach((seg, j) => seg.addEventListener("click", () => mostrar(j)));
 anterior.addEventListener("click", () => mostrar(atual - 1));
 proximo.addEventListener("click", () => mostrar(atual + 1));
 window.addEventListener("hashchange", () => mostrar(lerHash(), false));
 document.addEventListener("keydown", (e) => {
-  if (e.target.closest("input, textarea")) return;
-  if (["ArrowRight", "PageDown", " "].includes(e.key)) { e.preventDefault(); mostrar(atual + 1); }
-  if (["ArrowLeft", "PageUp"].includes(e.key)) { e.preventDefault(); mostrar(atual - 1); }
-  if (e.key === "Home") mostrar(0);
-  if (e.key === "End") mostrar(slides.length - 1);
+  if (e.target.closest("input, textarea") || e.ctrlKey || e.metaKey || e.altKey) return;
+  const tecla = e.key.toLowerCase();
+  if (["arrowright", "pagedown", " "].includes(tecla)) { e.preventDefault(); mostrar(atual + 1); }
+  else if (["arrowleft", "pageup"].includes(tecla)) { e.preventDefault(); mostrar(atual - 1); }
+  else if (tecla === "home") mostrar(0);
+  else if (tecla === "end") mostrar(slides.length - 1);
+  else if (tecla === "i") definirIndice(!app.classList.contains("recolhido"));
+  else if (tecla === "f") alternarApresentacao();
 });
 
 document.querySelectorAll(".copiar").forEach((botao) => {
@@ -586,6 +669,7 @@ document.querySelectorAll(".copiar").forEach((botao) => {
 });
 
 if (window.hljs) document.querySelectorAll("pre code").forEach((b) => hljs.highlightElement(b));
+definirIndice(celular.matches ? true : ler("indiceRecolhido") === "1", false);
 mostrar(lerHash(), false);
 </script>
 </body>
