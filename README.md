@@ -77,10 +77,10 @@ Divisão sugerida: **A** = qualidade/ETL · **B** = Q3 a Q7 · **C** = Q9 + hip�
 | 6 · LGPD e ética | Identificar os dados pessoais sensíveis | 25/11 | D | A fazer | Dados de saúde: Health_Issues, Smoking, Alcohol_Consumption, BMI, Heart_Rate. |
 | 6 · LGPD e ética | Descrever os riscos | 25/11 | D | A fazer | Reidentificação cruzando Age + Gender + Country + Occupation; discriminação (ex.: seguradoras). |
 | 6 · LGPD e ética | Definir as medidas de proteção | 25/11 | D | A fazer | Pseudonimizar ou remover o ID, faixas etárias, minimização, finalidade, consentimento, controle de acesso. Lembrar que o dataset é sintético. |
-| 7 · Hipóteses | Hipótese 1 | 25/11 | C | A fazer | Enunciado → análise → resultado → conclusão. Ideia: fumantes têm frequência cardíaca maior? |
-| 7 · Hipóteses | Hipótese 2 | 25/11 | C | A fazer | Enunciado → análise → resultado → conclusão. Ideia: quem faz mais atividade física dorme mais? |
-| 7 · Hipóteses | Hipótese 3 | 25/11 | C | A fazer | Enunciado → análise → resultado → conclusão. Ideia: alguma ocupação consome mais café? |
-| 7 · Hipóteses | Hipótese 4 | 25/11 | C | A fazer | Enunciado → análise → resultado → conclusão. Ideia: quem consome álcool tem pior qualidade de sono? |
+| 7 · Hipóteses | Hipótese 1 | 25/11 | C | Concluído | Enunciado → dados → análise → resultado → conclusão (H1 a H10 implementadas na seção 8). |
+| 7 · Hipóteses | Hipótese 2 | 25/11 | C | Concluído | Enunciado → dados → análise → resultado → conclusão (H1 a H10 implementadas na seção 8). |
+| 7 · Hipóteses | Hipótese 3 | 25/11 | C | Concluído | Enunciado → dados → análise → resultado → conclusão (H1 a H10 implementadas na seção 8). |
+| 7 · Hipóteses | Hipótese 4 | 25/11 | C | Concluído | Enunciado → dados → análise → resultado → conclusão (H1 a H10 implementadas na seção 8). |
 | 8 · Documento impresso | Escrever o documento de análise | 27/11 | D | A fazer | Descrição do dataset, procedimentos (ETL + EDA), respostas às questões (sem a Q8), H1 a H4 com validação, LGPD e conclusão. |
 | 8 · Documento impresso | Revisar o português e imprimir | 27/11 | D | A fazer | Norma culta é critério de avaliação. |
 | 9 · PowerPoint | Montar a apresentação | 27/11 | Grupo | A fazer | Capa (nome + RA) → introdução → divisão de tarefas → ferramentas → etapas da EDA/ETL → respostas → hipóteses → LGPD → conclusão. |
