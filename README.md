@@ -18,6 +18,7 @@ Os resultados indicam associações nos dados sintéticos, não relações de ca
 data/        dataset original (não deve ser alterado)
 docs/        enunciado e dicionário de dados (Read_Dataset_Coffee_Health.md) e trilha do projeto (trilha_projeto.csv)
 notebooks/   notebook com a análise
+apresentacao/ apresentação em PowerPoint (apresentacao_coffee_health.pptx)
 ```
 
 ## Requisitos
