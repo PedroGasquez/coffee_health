@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coffee &amp; Health — Apresentação</title>
+<style>
+:root{
+  --bg:#14100d; --bg2:#1e1813; --card:#261e17; --line:#3a2e24;
+  --text:#f3e9dc; --muted:#a89a8a; --crema:#e0a458; --crema2:#f4c97a;
+  --red:#e2644f; --green:#7fb685; --blue:#6ea8c9;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#0c0907;color:var(--text);font-family:"Segoe UI",system-ui,-apple-system,sans-serif;overflow:hidden}
+#stage{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;
+  background:radial-gradient(1200px 700px at 80% -10%,#2b2018 0%,var(--bg) 60%);overflow:hidden;border-radius:6px}
+.slide{position:absolute;inset:0;padding:64px 80px;display:flex;flex-direction:column;justify-content:center;
+  opacity:0;pointer-events:none}
+.slide.active{opacity:1;pointer-events:auto;transform:none}
+.kicker{color:var(--crema);font-size:15px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;margin-bottom:14px}
+h1{font-size:76px;line-height:1.02;letter-spacing:-.02em}
+h2{font-size:44px;line-height:1.12;letter-spacing:-.01em;margin-bottom:10px;max-width:1000px}
+h2 em,h1 em{font-style:normal;color:var(--crema2)}
+p.lead{font-size:22px;color:var(--muted);max-width:900px;line-height:1.45;margin-bottom:28px}
+.muted{color:var(--muted)}
+.grid{display:grid;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+.card h3{font-size:20px;margin-bottom:6px}
+.card p{color:var(--muted);font-size:16px;line-height:1.4}
+code{font-family:Consolas,monospace;background:#0f0b08;color:var(--crema2);padding:2px 7px;border-radius:6px;font-size:.92em}
+
+/* reveal in sequence */
+
+/* cover */
+.cover{justify-content:center}
+.cover .big{font-size:20px;color:var(--muted);margin-top:26px;max-width:700px;line-height:1.5}
+.cup{position:absolute;right:120px;top:50%;margin-top:-150px;width:300px;height:300px}
+.steam path{stroke:var(--crema2);stroke-width:5;fill:none;stroke-linecap:round;opacity:0;animation:steam 3.4s ease-in-out infinite}
+.steam path:nth-child(2){animation-delay:.8s}.steam path:nth-child(3){animation-delay:1.6s}
+@keyframes steam{0%{opacity:0;transform:translateY(24px)}35%{opacity:.8}100%{opacity:0;transform:translateY(-26px)}}
+.tags{display:flex;gap:10px;margin-top:30px;flex-wrap:wrap}
+.tag{border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:14px;color:var(--muted)}
+
+/* big numbers */
+.stats{grid-template-columns:repeat(4,1fr);margin-top:20px}
+.stat{text-align:left}
+.stat b{display:block;font-size:64px;color:var(--crema2);letter-spacing:-.02em;line-height:1}
+.stat span{display:block;margin-top:10px;color:var(--muted);font-size:16px}
+
+/* agenda */
+.agenda{grid-template-columns:repeat(3,1fr);margin-top:14px}
+.agenda .card{display:flex;gap:16px;align-items:flex-start}
+.agenda .n{font-size:34px;color:var(--crema);font-weight:700;line-height:1}
+
+/* variable chips */
+.vars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:10px}
+.vgroup h3{font-size:14px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;color:var(--crema)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:Consolas,monospace;font-size:14px;background:#0f0b08;border:1px solid var(--line);padding:6px 11px;border-radius:9px}
+.vgroup .sub{font-size:13px;color:var(--muted);margin-top:8px}
+
+/* libs */
+.libs{grid-template-columns:repeat(3,1fr)}
+.lib .ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-weight:700;margin-bottom:12px;background:#0f0b08;color:var(--crema2);font-family:Consolas,monospace}
+
+/* etl */
+.etl{display:grid;grid-template-columns:1fr 40px 1.5fr 40px 1fr;align-items:stretch;gap:0;margin-top:14px}
+.etl .arrow{display:grid;place-items:center;color:var(--crema);font-size:30px}
+.etl ul{list-style:none;margin-top:8px}
+.etl li{font-size:15px;color:var(--muted);padding:5px 0;border-top:1px dashed var(--line)}
+.etl li b{color:var(--text)}
+.phase{font-size:13px;letter-spacing:.18em;color:var(--crema);text-transform:uppercase;font-weight:600}
+
+/* donut */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.donut{width:300px;height:300px;margin:0 auto;position:relative}
+.donut svg{transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:34}
+.donut .ring{stroke:var(--crema);stroke-dasharray:0 1000;transition:stroke-dasharray 1s cubic-bezier(.2,.8,.2,1)}
+.slide.active .donut .ring{stroke-dasharray:var(--d) 1000}
+.donut .center{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.donut .center b{font-size:56px;color:var(--crema2);display:block;line-height:1}
+.donut .center span{font-size:15px;color:var(--muted)}
+
+/* bars */
+.bars .row{display:grid;grid-template-columns:130px 1fr 80px;align-items:center;gap:14px;margin:9px 0;font-size:17px}
+.track{height:24px;background:#0f0b08;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.bar{height:100%;width:0;border-radius:7px;background:linear-gradient(90deg,#b9803a,var(--crema2));transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.slide.active .bar{width:var(--w)}
+.bar.red{background:linear-gradient(90deg,#a8442f,var(--red))}
+.bar.green{background:linear-gradient(90deg,#4f8657,var(--green))}
+.bar.blue{background:linear-gradient(90deg,#3f7494,var(--blue))}
+.row .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--crema2);font-weight:600}
+.mini .row{grid-template-columns:100px 1fr 54px;margin:4px 0;font-size:13px}
+.mini .track{height:12px;border-radius:5px}
+.mini .bar{border-radius:4px}
+.h5 .row{grid-template-columns:90px 1fr 70px;margin:6px 0;font-size:15px}
+.h5 .track{height:20px}
+.h5 .row.cut{border-top:2px dashed var(--red);padding-top:8px;margin-top:8px;position:relative}
+.h5 .row.cut::before{content:'400 mg';position:absolute;right:0;top:-9px;font-size:11px;color:var(--red);background:var(--bg);padding:0 6px}
+
+.callout{margin-top:22px;border-left:4px solid var(--crema);padding:12px 20px;background:rgba(224,164,88,.08);border-radius:0 12px 12px 0;font-size:19px;line-height:1.45;max-width:1000px}
+.callout b{color:var(--crema2)}
+
+/* scatter */
+#scatter{width:100%;height:380px;background:#0f0b08;border:1px solid var(--line);border-radius:16px}
+#scatter circle{fill:var(--crema);opacity:0;transition:opacity .3s}
+.slide.active #scatter circle{opacity:.7}
+
+/* relation diagram */
+.rel{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:10px}
+.rel .col h4{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--crema);margin-bottom:10px;text-align:center}
+.rel .node{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;margin-bottom:10px;font-size:18px}
+.rel .node small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+.rel .low{border-color:var(--green)}.rel .med{border-color:var(--crema)}.rel .high{border-color:var(--red)}
+.relwrap{position:relative}
+.rel{position:relative;z-index:1}
+.rel .edge{background:none;border-color:transparent;font-size:15px;color:var(--muted)}
+.rel .edge span{background:var(--bg2);padding:3px 12px;border-radius:99px;border:1px solid var(--line)}
+.relwrap svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.relwrap line{stroke-width:3;stroke-dasharray:300;stroke-dashoffset:300;transition:stroke-dashoffset .6s ease}
+.slide.active .relwrap line{stroke-dashoffset:0}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:18px;margin-top:6px}
+th{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-align:right;padding:10px 14px;border-bottom:1px solid var(--line);font-weight:600}
+td{padding:13px 14px;text-align:right;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+td.hl{color:var(--crema2);font-weight:700;background:rgba(224,164,88,.08)}
+
+/* hypotheses */
+.hyp{grid-template-columns:repeat(2,1fr);gap:14px}
+.hyp .card{padding:16px 20px}
+.hyp .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.hyp .id{font-weight:700;color:var(--crema)}
+.badge{font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-radius:99px;padding:3px 10px;font-weight:700}
+.badge.ok{background:rgba(127,182,133,.18);color:var(--green)}
+.badge.warn{background:rgba(224,164,88,.18);color:var(--crema2)}
+.badge.no{background:rgba(226,100,79,.18);color:var(--red)}
+.hyp h3{font-size:18px;margin-bottom:4px}
+.hyp p{font-size:14.5px}
+
+/* end */
+.end{text-align:center;align-items:center}
+.end h1{font-size:64px;max-width:980px}
+
+/* chrome */
+#progress{position:absolute;left:0;top:0;height:4px;background:linear-gradient(90deg,var(--crema),var(--crema2));width:0;z-index:5}
+#hud{position:absolute;bottom:22px;left:80px;right:80px;display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;z-index:5}
+#dots{display:flex;gap:6px}
+#dots i{width:7px;height:7px;border-radius:50%;background:var(--line);cursor:pointer;transition:all .3s}
+#dots i.on{background:var(--crema);width:22px;border-radius:4px}
+.nav{position:fixed;top:0;bottom:0;width:20%;z-index:10;cursor:pointer}
+.nav.l{left:0}.nav.r{right:0}
+#help{position:fixed;right:14px;bottom:10px;font-size:12px;color:#6d6154;z-index:11}
+</style>
+</head>
+<body>
+<div id="stage">
+<div id="progress"></div>
+
+<!-- 1 CAPA -->
+<section class="slide cover">
+  <svg class="cup r" style="--i:2" viewBox="0 0 300 300" fill="none">
+    <g class="steam"><path d="M110 90 q-18 -26 0 -48 q18 -22 0 -44"/><path d="M150 90 q-18 -26 0 -48 q18 -22 0 -44"/><path d="M190 90 q-18 -26 0 -48 q18 -22 0 -44"/></g>
+    <path d="M60 110h170v70a85 85 0 0 1 -85 85a85 85 0 0 1 -85 -85z" fill="#2c2119" stroke="#e0a458" stroke-width="5"/>
+    <path d="M230 135h18a30 30 0 0 1 0 60h-26" stroke="#e0a458" stroke-width="5"/>
+    <ellipse cx="145" cy="110" rx="85" ry="14" fill="#6b3f1d" stroke="#e0a458" stroke-width="4"/>
+    <ellipse cx="145" cy="112" rx="60" ry="8" fill="#a8672f" opacity=".7"/>
+    <path d="M40 285h210" stroke="#e0a458" stroke-width="5" stroke-linecap="round"/>
+  </svg>
+  <div class="kicker r">Análise de Dados e Big Data · Projeto A3 · 2026/2</div>
+  <h1 class="r" style="--i:1">Café, sono<br>e <em>saúde</em></h1>
+  <p class="big r" style="--i:3">Dez mil pessoas, dezesseis variáveis e uma pergunta: o que os dados dizem sobre o que acontece quando a xícara enche?</p>
+  <div class="tags r" style="--i:4"><span class="tag">Dataset sintético</span><span class="tag">10.000 registros</span><span class="tag">Python · pandas · seaborn</span></div>
+</section>
+
+<!-- 2 ROTEIRO -->
+<section class="slide">
+  <div class="kicker r">Roteiro</div>
+  <h2 class="r" style="--i:1">Do arquivo CSV às <em>hipóteses</em></h2>
+  <div class="grid agenda">
+    <div class="card r" style="--i:2"><span class="n">01</span><div><h3>O dataset</h3><p>O que é, como é composto e que tipos de variáveis existem.</p></div></div>
+    <div class="card r" style="--i:3"><span class="n">02</span><div><h3>Ferramentas</h3><p>As bibliotecas Python que sustentam a análise.</p></div></div>
+    <div class="card r" style="--i:4"><span class="n">03</span><div><h3>Qualidade e ETL</h3><p>Ausentes, duplicados e como tratar sem tocar no original.</p></div></div>
+    <div class="card r" style="--i:5"><span class="n">04</span><div><h3>Descobertas</h3><p>Perfil, consumo, cafeína, sono, estresse e saúde.</p></div></div>
+    <div class="card r" style="--i:6"><span class="n">05</span><div><h3>Hipóteses</h3><p>Quatro hipóteses testadas: o que os dados sustentam e o que não.</p></div></div>
+    <div class="card r" style="--i:7"><span class="n">06</span><div><h3>Cuidados</h3><p>Sintético, correlação ≠ causa e LGPD.</p></div></div>
+  </div>
+</section>
+
+<!-- 3 DATASET EM NUMEROS -->
+<section class="slide">
+  <div class="kicker r">01 · O dataset</div>
+  <h2 class="r" style="--i:1"><code>synthetic_coffee_health_10000.csv</code></h2>
+  <p class="lead r" style="--i:2">Cada linha é uma pessoa. Cada coluna, um hábito, uma medida ou um sinal de saúde.</p>
+  <div class="grid stats">
+    <div class="card stat r" style="--i:3"><b data-count="10000">0</b><span>registros (pessoas)</span></div>
+    <div class="card stat r" style="--i:4"><b data-count="16">0</b><span>colunas</span></div>
+    <div class="card stat r" style="--i:5"><b data-count="20">0</b><span>países</span></div>
+    <div class="card stat r" style="--i:6"><b data-count="0">0</b><span>linhas duplicadas</span></div>
+  </div>
+  <div class="callout r" style="--i:7">Os dados são <b>sintéticos</b>: o que aparece aqui são <b>associações</b> dentro do dataset, não evidência clínica.</div>
+</section>
+
+<!-- 4 VARIAVEIS -->
+<section class="slide">
+  <div class="kicker r">01 · O dataset</div>
+  <h2 class="r" style="--i:1">16 colunas, <em>6 tipos</em> de dado</h2>
+  <p class="lead r" style="--i:2">O tipo no pandas diz como está guardado; a classificação estatística diz o que a coluna <em>representa</em>.</p>
+  <div class="vars">
+    <div class="card vgroup r" style="--i:3"><h3>Numéricas contínuas · 5</h3><div class="chips"><span class="chip">Coffee_Intake</span><span class="chip">Caffeine_mg</span><span class="chip">Sleep_Hours</span><span class="chip">BMI</span><span class="chip">Physical_Activity_Hours</span></div></div>
+    <div class="card vgroup r" style="--i:4"><h3>Numéricas discretas · 2</h3><div class="chips"><span class="chip">Age</span><span class="chip">Heart_Rate</span></div><p class="sub">Inteiros: anos e batimentos por minuto.</p></div>
+    <div class="card vgroup r" style="--i:5"><h3>Categóricas nominais · 3</h3><div class="chips"><span class="chip">Gender</span><span class="chip">Country</span><span class="chip">Occupation</span></div><p class="sub">Categorias sem ordem.</p></div>
+    <div class="card vgroup r" style="--i:6"><h3>Categóricas ordinais · 3</h3><div class="chips"><span class="chip">Sleep_Quality</span><span class="chip">Stress_Level</span><span class="chip">Health_Issues</span></div><p class="sub">Poor &lt; Fair &lt; Good &lt; Excellent · Low &lt; Medium &lt; High · Mild &lt; Moderate &lt; Severe</p></div>
+    <div class="card vgroup r" style="--i:7"><h3>Binárias · 2</h3><div class="chips"><span class="chip">Smoking</span><span class="chip">Alcohol_Consumption</span></div><p class="sub">0/1: a média é a proporção de 1.</p></div>
+    <div class="card vgroup r" style="--i:8"><h3>Identificador · 1</h3><div class="chips"><span class="chip">ID</span></div><p class="sub">Não é medida; sai na anonimização.</p></div>
+  </div>
+</section>
+
+<!-- 5 BIBLIOTECAS -->
+<section class="slide">
+  <div class="kicker r">02 · Ferramentas</div>
+  <h2 class="r" style="--i:1">A <em>caixa de ferramentas</em> em Python</h2>
+  <p class="lead r" style="--i:2">Do CSV ao gráfico em poucas linhas, sempre trabalhando numa cópia dos dados.</p>
+  <div class="grid libs">
+    <div class="card lib r" style="--i:3"><div class="ico">pd</div><h3>pandas</h3><p>Lê o CSV e manipula os dados em DataFrames: <code>groupby</code>, <code>describe</code>, <code>corr</code>, <code>value_counts</code>.</p></div>
+    <div class="card lib r" style="--i:4"><div class="ico">plt</div><h3>matplotlib</h3><p>Base de todos os gráficos: barras, histogramas e dispersão.</p></div>
+    <div class="card lib r" style="--i:5"><div class="ico">sns</div><h3>seaborn</h3><p>Gráficos estatísticos mais bonitos e expressivos, construídos sobre o matplotlib.</p></div>
+    <div class="card lib r" style="--i:6"><div class="ico">sk</div><h3>scikit-learn</h3><p>Árvore de Decisão da Q8 (prever <code>Sleep_Quality</code>) e regressão linear nas hipóteses.</p></div>
+    <div class="card lib r" style="--i:7"><div class="ico">.env</div><h3>python-dotenv · os · pathlib</h3><p>Valores fixos (caminho do CSV, semente, limites das faixas) ficam no <code>.env</code>, fora do código.</p></div>
+    <div class="card lib r" style="--i:8"><div class="ico">sp</div><h3>scipy</h3><p>Testes estatísticos das hipóteses com <code>scipy.stats</code>: Pearson, Spearman, ANOVA, teste t e qui-quadrado.</p></div>
+  </div>
+</section>
+
+<!-- 6 ETL -->
+<section class="slide">
+  <div class="kicker r">03 · Qualidade e ETL</div>
+  <h2 class="r" style="--i:1">O original <em>nunca</em> é alterado</h2>
+  <div class="etl">
+    <div class="card r" style="--i:2"><div class="phase">Extração</div><h3>CSV → <code>df_original</code></h3><ul><li><code>pd.read_csv</code> só lê</li><li>O arquivo nunca é regravado</li></ul></div>
+    <div class="arrow r" style="--i:3">➜</div>
+    <div class="card r" style="--i:4"><div class="phase">Transformação</div><h3>Tudo na cópia <code>df</code></h3><ul><li><b>1.</b> <code>df.copy()</code></li><li><b>2.</b> Duplicados: <code>drop_duplicates()</code></li><li><b>3.</b> Ausentes: “Não informado”</li><li><b>4.</b> Ordinais com ordem correta</li><li><b>5.</b> Anonimização: remove <code>ID</code></li></ul></div>
+    <div class="arrow r" style="--i:5">➜</div>
+    <div class="card r" style="--i:6"><div class="phase">Carga</div><h3>DataFrame limpo</h3><ul><li>10.000 × 15</li><li>Base de todas as análises</li></ul></div>
+  </div>
+  <div class="callout r" style="--i:7">Três verificações de duplicidade — linha inteira, linha ignorando o <code>ID</code> e <code>ID</code> repetido — todas deram <b>zero</b>. Nenhuma grafia inconsistente nas categorias.</div>
+</section>
+
+<!-- 7 AUSENTES -->
+<section class="slide">
+  <div class="kicker r">03 · Qualidade e ETL</div>
+  <div class="two">
+    <div>
+      <h2 class="r" style="--i:1">Uma coluna esconde <em>quase 60%</em> do mistério</h2>
+      <p class="lead r" style="--i:2">Só <code>Health_Issues</code> tem vazios: <b style="color:var(--text)">5.941</b> registros. As outras 15 colunas estão completas.</p>
+      <div class="callout r" style="--i:3"><b>Vazio ≠ saudável.</b> Não preenchemos com “Mild” nem tratamos como “sem problema”: rotulamos como <i>Não informado</i> ou filtramos (como na Q10).</div>
+    </div>
+    <div class="donut r" style="--i:2">
+      <svg width="300" height="300" viewBox="0 0 300 300"><circle cx="150" cy="150" r="120" stroke="#0f0b08"/><circle class="ring" cx="150" cy="150" r="120" pathLength="1000" style="--d:594"/></svg>
+      <div class="center"><div><b data-count="59.41" data-dec="2" data-suffix="%">0</b><span>sem Health_Issues</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 PERFIL -->
+<section class="slide">
+  <div class="kicker r">04 · Descobertas · Perfil</div>
+  <h2 class="r" style="--i:1">Quem são essas <em>10 mil pessoas</em>?</h2>
+  <div class="two" style="margin-top:14px">
+    <div class="bars r" style="--i:2">
+      <p class="muted" style="margin-bottom:6px">Distribuição por gênero</p>
+      <div class="row"><span>Female</span><div class="track"><div class="bar" style="--w:100%"></div></div><span class="v">50,01%</span></div>
+      <div class="row"><span>Male</span><div class="track"><div class="bar" style="--w:95.4%"></div></div><span class="v">47,73%</span></div>
+      <div class="row"><span>Other</span><div class="track"><div class="bar" style="--w:4.5%"></div></div><span class="v">2,26%</span></div>
+      <p class="muted" style="margin:22px 0 6px">Idade média por gênero (anos)</p>
+      <div class="row"><span>Female</span><div class="track"><div class="bar blue" style="--w:43.8%"></div></div><span class="v">35,03</span></div>
+      <div class="row"><span>Male</span><div class="track"><div class="bar blue" style="--w:43.6%"></div></div><span class="v">34,89</span></div>
+      <div class="row"><span>Other</span><div class="track"><div class="bar blue" style="--w:43.1%"></div></div><span class="v">34,50</span></div>
+    </div>
+    <div>
+      <div class="card r" style="--i:3;margin-bottom:14px"><h3>Idades de 18 a 80 anos</h3><p>Média geral de <b style="color:var(--crema2)">34,95</b> anos e mediana próxima de 34–35: sem distorção por extremos.</p></div>
+      <div class="card r" style="--i:4;margin-bottom:14px"><h3>1 em cada 5 fuma · 3 em cada 10 bebem</h3><p>Médias de 0,20 (<code>Smoking</code>) e 0,30 (<code>Alcohol_Consumption</code>).</p></div>
+      <div class="callout r" style="--i:5">As idades são praticamente iguais entre os gêneros: <b>a diferença máxima é de ~0,5 ano</b>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 9 CONSUMO -->
+<section class="slide">
+  <div class="kicker r">04 · Descobertas · Consumo</div>
+  <h2 class="r" style="--i:1">O café <em>não tem pátria</em></h2>
+  <p class="lead r" style="--i:2;margin-bottom:14px">Média geral <b style="color:var(--crema2)">2,51</b> · mínimo 0 (558 pessoas não bebem) · máximo 8,2. A média por país vai de 2,41 a 2,60.</p>
+  <div class="two">
+    <div class="bars mini r" style="--i:3" id="paises"></div>
+    <div>
+      <div class="card r" style="--i:4;margin-bottom:14px"><h3>Top 5 países por média</h3><p>Spain 2,60 · Norway 2,59 · UK 2,58 · China 2,57 · USA 2,56</p></div>
+      <div class="callout r" style="--i:5">Entre o 1º e o último há <b>0,19</b> de diferença. Com o eixo começando em zero, os 20 países parecem o mesmo país: <b>o consumo não depende do local</b> neste dataset.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 CAFE x CAFEINA -->
+<section class="slide">
+  <div class="kicker r">04 · Descobertas · Fato 1</div>
+  <div class="two" style="grid-template-columns:1.25fr 1fr">
+    <div class="r" style="--i:2"><svg id="scatter" viewBox="0 0 640 380"></svg></div>
+    <div>
+      <h2 class="r" style="--i:1">Uma xícara = <em>95 mg</em></h2>
+      <div class="card stat r" style="--i:3;margin-bottom:14px"><b data-count="0.9998" data-dec="4">0</b><span>correlação café × cafeína</span></div>
+      <p class="lead r" style="--i:4;font-size:18px">Cada unidade de café vale ~95 mg de cafeína (entre 94 e 96 em metade dos casos). É praticamente uma reta.</p>
+      <div class="callout r" style="--i:5;font-size:16px">Na prática, as duas colunas são <b>a mesma informação</b>. Para modelos, usar as duas é redundante.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 11 CAFE x SONO -->
+<section class="slide">
+  <div class="kicker r">04 · Descobertas · Fato 2</div>
+  <h2 class="r" style="--i:1">Mais café, <em>menos sono</em></h2>
+  <p class="lead r" style="--i:2">Agrupando as pessoas pelo consumo de café, o padrão é uma escada em todos os degraus.</p>
+  <div class="two">
+    <div class="bars r" style="--i:3">
+      <p class="muted" style="margin-bottom:6px">Horas de sono médias</p>
+      <div class="row"><span>0 a 1</span><div class="track"><div class="bar green" style="--w:69.6%"></div></div><span class="v">6,96 h</span></div>
+      <div class="row"><span>1 a 3</span><div class="track"><div class="bar green" style="--w:67.1%"></div></div><span class="v">6,71 h</span></div>
+      <div class="row"><span>3 a 5</span><div class="track"><div class="bar green" style="--w:64.1%"></div></div><span class="v">6,41 h</span></div>
+      <div class="row"><span>5 ou mais</span><div class="track"><div class="bar green" style="--w:61.2%"></div></div><span class="v">6,12 h</span></div>
+      <p class="muted" style="margin:20px 0 6px">% com sono “Poor”</p>
+      <div class="row"><span>0 a 1</span><div class="track"><div class="bar red" style="--w:30.6%"></div></div><span class="v">5,6%</span></div>
+      <div class="row"><span>1 a 3</span><div class="track"><div class="bar red" style="--w:46.4%"></div></div><span class="v">8,5%</span></div>
+      <div class="row"><span>3 a 5</span><div class="track"><div class="bar red" style="--w:66.7%"></div></div><span class="v">12,2%</span></div>
+      <div class="row"><span>5 ou mais</span><div class="track"><div class="bar red" style="--w:100%"></div></div><span class="v">18,3%</span></div>
+    </div>
+    <div>
+      <div class="card r" style="--i:4;margin-bottom:14px"><h3>Quem dorme mal bebe mais</h3><p>Café médio por qualidade do sono: Excellent <b>2,05</b> · Good 2,45 · Fair 2,76 · Poor <b>2,98</b>.</p></div>
+      <div class="callout r" style="--i:5">Quem tem sono <b>Poor</b> consome ~45% mais café que quem tem sono <b>Excellent</b>. A correlação com as horas de sono é de <b>−0,19</b>: fraca, mas consistente.</div>
+    </div>
+  </div>
+</section>
+
+<!-- 12 SONO x ESTRESSE -->
+<section class="slide">
+  <div class="kicker r">04 · Descobertas · Fato 3</div>
+  <h2 class="r" style="--i:1">Estresse <em>rouba horas</em> de sono</h2>
+  <p class="lead r" style="--i:2">Média de <code>Sleep_Hours</code> por nível de estresse — e o café acompanha a escada.</p>
+  <div class="two">
+    <div class="bars r" style="--i:3">
+      <div class="row"><span>Low</span><div class="track"><div class="bar green" style="--w:72.5%"></div></div><span class="v">7,25 h</span></div>
+      <div class="row"><span>Medium</span><div class="track"><div class="bar" style="--w:55.8%"></div></div><span class="v">5,58 h</span></div>
+      <div class="row"><span>High</span><div class="track"><div class="bar red" style="--w:44.5%"></div></div><span class="v">4,45 h</span></div>
+    </div>
+    <div>
+      <div class="card r" style="--i:4;margin-bottom:14px"><h3>Quase 3 horas de diferença</h3><p>Entre estresse baixo e alto: <b style="color:var(--crema2)">2,8 h</b> de sono a menos por noite.</p></div>
+      <div class="card r" style="--i:5"><h3>E o café?</h3><p>Café médio: Low <b>2,37</b> → Medium 2,76 → High <b>2,98</b>. Entre quem bebe 5+ unidades, 18,3% têm estresse alto (contra 5,6% em quem bebe até 1).</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- 13 COINCIDENCIA -->
+<section class="slide">
+  <div class="kicker r">04 · Descobertas · Fato 4</div>
+  <h2 class="r" style="--i:1">A pista que <em>mudou a análise</em></h2>
+  <p class="lead r" style="--i:2">Ao cruzar <code>Stress_Level</code> × <code>Sleep_Quality</code> (Q9), esperávamos 12 combinações. Existem só <b style="color:var(--crema2)">4</b>.</p>
+  <div class="relwrap r" style="--i:3">
+    <div class="rel">
+      <div class="col"><h4>Estresse</h4>
+        <div class="node high" id="a1">High<small>961 pessoas</small></div>
+        <div class="node med" id="a2">Medium<small>2.050 pessoas</small></div>
+        <div class="node low" id="a3">Low<small>6.989 pessoas</small></div></div>
+      <div class="col"><h4>Correspondência</h4>
+        <div class="node edge"><span>100%</span><small>&nbsp;</small></div>
+        <div class="node edge"><span>100%</span><small>&nbsp;</small></div>
+        <div class="node edge"><span>80,7% Good · 19,3% Excellent</span><small>&nbsp;</small></div></div>
+      <div class="col"><h4>Qualidade do sono</h4>
+        <div class="node high" id="b1">Poor<small>sono 4,45 h · café 2,98</small></div>
+        <div class="node med" id="b2">Fair<small>sono 5,58 h · café 2,76</small></div>
+        <div class="node low" id="b3">Good / Excellent<small>sono 6,92–8,59 h · café 2,45–2,05</small></div></div>
+    </div>
+  </div>
+  <div class="callout r" style="--i:5">Estresse e qualidade do sono são, aqui, <b>quase a mesma variável</b>. É uma marca clássica de dado sintético gerado por regras — e um alerta para não “somar” os dois como se fossem evidências independentes.</div>
+</section>
+
+<!-- 14 SAUDE -->
+<section class="slide">
+  <div class="kicker r">04 · Descobertas · Fato 5</div>
+  <h2 class="r" style="--i:1">Problemas de saúde: o culpado <em>não é o café</em></h2>
+  <p class="lead r" style="--i:2">Só os 4.059 registros com <code>Health_Issues</code> preenchido (Q10).</p>
+  <div class="r" style="--i:3">
+  <table>
+    <tr><th>Grau</th><th>Registros</th><th>Café</th><th>Cafeína (mg)</th><th>IMC</th><th>Freq. card.</th><th>Fumantes</th><th>Sono (h)</th></tr>
+    <tr><td>Mild</td><td>3.579</td><td>2,69</td><td>255,7</td><td>24,36</td><td>70,8</td><td>19%</td><td>5,80</td></tr>
+    <tr><td>Moderate</td><td>463</td><td>2,80</td><td>266,5</td><td class="hl">27,26</td><td>71,3</td><td>23%</td><td>5,37</td></tr>
+    <tr><td>Severe</td><td>17</td><td>2,49</td><td>236,1</td><td class="hl">31,98</td><td>72,9</td><td>24%</td><td>5,41</td></tr>
+  </table></div>
+  <div class="callout r" style="--i:4">O <b>IMC</b> sobe a cada grau (24,4 → 27,3 → 32,0); o café <b>não segue padrão</b> (2,69 → 2,80 → 2,49). O grupo Severe tem só 17 pessoas: qualquer média ali é frágil. E, de qualquer forma, <b>associação não prova que o café cause problemas de saúde</b>.</div>
+</section>
+
+<!-- 15 HIPOTESES -->
+<section class="slide">
+  <div class="kicker r">05 · Hipóteses</div>
+  <h2 class="r">Quatro hipóteses <em>postas à prova</em></h2>
+  <p class="lead r">Cada uma segue o mesmo caminho no notebook: enunciado → análise em Python → resultado → conclusão.</p>
+  <div class="grid hyp">
+    <div class="card r"><div class="top"><span class="id">H3</span><span class="badge warn">Confirmada com ressalva</span></div><h3>Mais café está associado a mais estresse</h3><p>O consumo sobe a cada nível de estresse — mas estresse e sono são a mesma informação.</p></div>
+    <div class="card r"><div class="top"><span class="id">H5</span><span class="badge warn">Parcialmente confirmada</span></div><h3>Ultrapassar 400 mg de cafeína por dia marca uma piora clara</h3><p>Quem passa de 400 mg está pior, mas a piora é gradual, sem degrau.</p></div>
+    <div class="card r"><div class="top"><span class="id">H7</span><span class="badge ok">Confirmada</span></div><h3>Após os 50 anos, o risco de problemas de saúde dispara</h3><p>De ~35% para 100% a partir dos 51 anos: um limiar rígido.</p></div>
+    <div class="card r"><div class="top"><span class="id">H10</span><span class="badge no">Rejeitada</span></div><h3>O perfil demográfico explica as diferenças de consumo de café</h3><p>País, gênero e ocupação não mudam o consumo de forma relevante.</p></div>
+  </div>
+  <p class="muted r" style="margin-top:16px;font-size:14px">Numeração do notebook (seção 8, H1 a H10). Testes com <code>scipy.stats</code>: ANOVA, teste t e qui-quadrado.</p>
+</section>
+
+<!-- H3 -->
+<section class="slide">
+  <div class="kicker r">05 · Hipóteses · H3 <span class="badge warn" style="margin-left:10px">Confirmada com ressalva</span></div>
+  <h2 class="r">Mais café está associado a <em>mais estresse</em></h2>
+  <p class="lead r">Média de <code>Coffee_Intake</code> por <code>Stress_Level</code>, comparada com ANOVA <i>one-way</i>.</p>
+  <div class="two">
+    <div>
+      <div class="bars r">
+        <div class="row"><span>Low</span><div class="track"><div class="bar green" style="--w:79.5%"></div></div><span class="v">2,37</span></div>
+        <div class="row"><span>Medium</span><div class="track"><div class="bar" style="--w:92.6%"></div></div><span class="v">2,76</span></div>
+        <div class="row"><span>High</span><div class="track"><div class="bar red" style="--w:100%"></div></div><span class="v">2,98</span></div>
+      </div>
+      <div class="grid r" style="grid-template-columns:1fr 1fr;margin-top:18px">
+        <div class="card stat"><b style="font-size:44px">117,09</b><span>estatística F (ANOVA)</span></div>
+        <div class="card stat"><b style="font-size:44px">&lt; 0,001</b><span>p-valor</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="card r" style="margin-bottom:14px"><h3>O que o teste diz</h3><p>A diferença entre os três níveis é estatisticamente significativa: quem tem estresse alto consome ~26% mais café que quem tem estresse baixo.</p></div>
+      <div class="callout r" style="margin-top:0"><b>Ressalva crítica:</b> <code>Stress_Level</code> é uma recodificação exata de <code>Sleep_Quality</code> (High = Poor, Medium = Fair, Low = Good/Excellent). Não dá para separar “estresse” de “sono ruim” neste dataset.</div>
+    </div>
+  </div>
+</section>
+
+<!-- H5 -->
+<section class="slide">
+  <div class="kicker r">05 · Hipóteses · H5 <span class="badge warn" style="margin-left:10px">Parcialmente confirmada</span></div>
+  <h2 class="r">400 mg de cafeína: <em>degrau ou rampa?</em></h2>
+  <p class="lead r" style="margin-bottom:16px">12,46% das pessoas passam de 400 mg/dia. Elas estão piores — mas a curva não dá salto nesse ponto.</p>
+  <div class="two" style="gap:36px;align-items:start">
+    <div class="bars h5 r">
+      <p class="muted" style="margin-bottom:4px">Sono médio por faixa de cafeína (mg)</p>
+      <div class="row"><span>0–100</span><div class="track"><div class="bar green" style="--w:87%"></div></div><span class="v">6,96 h</span></div>
+      <div class="row"><span>100–200</span><div class="track"><div class="bar green" style="--w:85.1%"></div></div><span class="v">6,81 h</span></div>
+      <div class="row"><span>200–300</span><div class="track"><div class="bar green" style="--w:82.5%"></div></div><span class="v">6,60 h</span></div>
+      <div class="row"><span>300–400</span><div class="track"><div class="bar green" style="--w:80.6%"></div></div><span class="v">6,45 h</span></div>
+      <div class="row cut"><span>400–500</span><div class="track"><div class="bar red" style="--w:78.8%"></div></div><span class="v">6,30 h</span></div>
+      <div class="row"><span>&gt; 500</span><div class="track"><div class="bar red" style="--w:76.3%"></div></div><span class="v">6,10 h</span></div>
+    </div>
+    <div class="bars h5 r">
+      <p class="muted" style="margin-bottom:4px">% com problema de saúde registrado</p>
+      <div class="row"><span>0–100</span><div class="track"><div class="bar" style="--w:55.3%"></div></div><span class="v">33,2%</span></div>
+      <div class="row"><span>100–200</span><div class="track"><div class="bar" style="--w:62.1%"></div></div><span class="v">37,2%</span></div>
+      <div class="row"><span>200–300</span><div class="track"><div class="bar" style="--w:67.5%"></div></div><span class="v">40,5%</span></div>
+      <div class="row"><span>300–400</span><div class="track"><div class="bar" style="--w:75.5%"></div></div><span class="v">45,3%</span></div>
+      <div class="row cut"><span>400–500</span><div class="track"><div class="bar red" style="--w:78.8%"></div></div><span class="v">47,3%</span></div>
+      <div class="row"><span>&gt; 500</span><div class="track"><div class="bar red" style="--w:93.3%"></div></div><span class="v">56,0%</span></div>
+    </div>
+  </div>
+  <div class="callout r" style="margin-top:16px">Acima de 400 mg: sono de <b>6,24 h</b> contra 6,69 h, e problemas de saúde em <b>49,68%</b> contra 39,30% (p &lt; 0,001). Só que cada faixa piora um pouco em relação à anterior: é um <b>efeito contínuo, não um limiar</b>.</div>
+</section>
+
+<!-- H7 -->
+<section class="slide">
+  <div class="kicker r">05 · Hipóteses · H7 <span class="badge ok" style="margin-left:10px">Confirmada</span></div>
+  <div class="two" style="grid-template-columns:1.3fr 1fr">
+    <div class="r"><svg id="idade" viewBox="0 0 660 400" style="width:100%;background:#0f0b08;border:1px solid var(--line);border-radius:16px"></svg></div>
+    <div>
+      <h2 class="r">Aos 51 anos, um <em>paredão</em></h2>
+      <p class="lead r" style="font-size:18px;margin-bottom:16px">Taxa de problemas de saúde registrados em cada idade.</p>
+      <div class="grid r" style="grid-template-columns:1fr 1fr;margin-bottom:14px">
+        <div class="card stat"><b style="font-size:40px">34,55%</b><span>até 50 anos</span></div>
+        <div class="card stat"><b style="font-size:40px;color:var(--red)">100%</b><span>acima de 50 (923 pessoas)</span></div>
+      </div>
+      <div class="callout r" style="margin-top:0;font-size:16px">A gravidade acompanha a idade média: Mild <b>36,6</b> · Moderate <b>48,1</b> · Severe <b>56,6</b> anos. E a idade não se relaciona com café (r = −0,01) nem com sono: é uma <b>regra do gerador sintético</b>, não uma progressão suave.</div>
+    </div>
+  </div>
+</section>
+
+<!-- H10 -->
+<section class="slide">
+  <div class="kicker r">05 · Hipóteses · H10 <span class="badge no" style="margin-left:10px">Rejeitada</span></div>
+  <h2 class="r">O perfil demográfico <em>não explica</em> o consumo</h2>
+  <p class="lead r">ANOVA de <code>Coffee_Intake</code> para país, gênero e ocupação: nenhuma diferença significativa.</p>
+  <div class="r">
+  <table>
+    <tr><th>Dimensão</th><th>Menor média</th><th>Maior média</th><th>F (ANOVA)</th><th>p-valor</th></tr>
+    <tr><td>País (20)</td><td>2,41 · Belgium</td><td>2,60 · Spain</td><td>0,82</td><td class="hl">0,6894</td></tr>
+    <tr><td>Gênero (3)</td><td>2,49 · Other</td><td>2,52 · Male</td><td>0,37</td><td class="hl">0,6916</td></tr>
+    <tr><td>Ocupação (5)</td><td>2,48 · Office</td><td>2,54 · Healthcare</td><td>0,41</td><td class="hl">0,8016</td></tr>
+  </table></div>
+  <div class="callout r">Com p-valores tão altos, as pequenas variações são compatíveis com <b>flutuação aleatória</b>. Único sinal: a taxa de problemas de saúde por país (35,87% na França a 46,91% na Espanha, p = 0,0074) — fraco e isolado entre vários testes, a ser lido com cautela.</div>
+</section>
+
+<!-- 16 CUIDADOS -->
+<section class="slide">
+  <div class="kicker r">06 · Cuidados</div>
+  <h2 class="r" style="--i:1">Antes de <em>tirar conclusões</em></h2>
+  <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:16px">
+    <div class="card r" style="--i:2"><h3>🧪 Dado sintético</h3><p>Padrões tão limpos (r = 0,9998; estresse = sono) não aparecem em dados reais. Os resultados valem para este dataset.</p></div>
+    <div class="card r" style="--i:3"><h3>🔗 Correlação ≠ causa</h3><p>Dormir mal pode levar a beber mais café — ou o contrário. Só um experimento controlado separa as duas direções.</p></div>
+    <div class="card r" style="--i:4"><h3>⚖️ LGPD e ética</h3><p>Saúde é dado sensível. Cruzar idade + gênero + país + ocupação pode reidentificar alguém; seguradoras poderiam discriminar. Por isso o <code>ID</code> sai na ETL.</p></div>
+    <div class="card r" style="--i:5"><h3>📏 Unidades indefinidas</h3><p>O CSV não diz a unidade de <code>Coffee_Intake</code> nem o período de <code>Physical_Activity_Hours</code>.</p></div>
+    <div class="card r" style="--i:6"><h3>👥 Grupos pequenos</h3><p>Severe tem 17 registros e “Other” 2,26% do total: médias ali oscilam muito.</p></div>
+    <div class="card r" style="--i:7"><h3>🕳️ Vazios importam</h3><p>Ausência em <code>Health_Issues</code> não é “saudável”: é informação que não temos.</p></div>
+  </div>
+</section>
+
+<!-- 17 FIM -->
+<section class="slide end">
+  <div class="kicker r">Em uma frase</div>
+  <h1 class="r" style="--i:1">Mais café acompanha <em>menos sono</em> e mais estresse. Mas o café, sozinho, <em>não explica</em> a saúde.</h1>
+  <p class="big r" style="--i:3;color:var(--muted);font-size:20px;margin-top:28px">Idade, IMC e sono explicam os problemas de saúde neste dataset. Próximo passo: validar esses padrões em dados reais.</p>
+  <div class="tags r" style="--i:4;justify-content:center"><span class="tag">Obrigado!</span><span class="tag">Perguntas?</span></div>
+</section>
+
+<div id="hud"><span id="count">1 / 17</span><div id="dots"></div><span>← → · Espaço · F para tela cheia</span></div>
+</div>
+<div class="nav l" id="prev"></div><div class="nav r" id="next"></div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')], stage=document.getElementById('stage');
+let cur=0;
+const dots=document.getElementById('dots');
+slides.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i);dots.appendChild(d)});
+
+function fit(){const s=Math.min(innerWidth/1280,innerHeight/720);stage.style.transform=`translate(-50%,-50%) scale(${s})`}
+addEventListener('resize',fit);fit();
+
+function countUp(el){
+  const end=parseFloat(el.dataset.count),dec=+(el.dataset.dec||0),suf=el.dataset.suffix||'',t0=performance.now(),dur=800;
+  const fmt=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:dec,maximumFractionDigits:dec})+suf;
+  (function tick(t){const p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,3);el.textContent=fmt(end*e);if(p<1)requestAnimationFrame(tick)})(t0);
+}
+function go(n){
+  n=Math.max(0,Math.min(slides.length-1,n));cur=n;
+  slides.forEach((s,i)=>{s.classList.toggle('active',i===n);s.classList.toggle('past',i<n)});
+  [...dots.children].forEach((d,i)=>d.classList.toggle('on',i===n));
+  document.getElementById('count').textContent=`${n+1} / ${slides.length}`;
+  document.getElementById('progress').style.width=((n+1)/slides.length*100)+'%';
+  slides[n].querySelectorAll('[data-count]').forEach(el=>{countUp(el)});
+  history.replaceState(null,'','#'+(n+1));
+}
+const nx=()=>go(cur+1),pv=()=>go(cur-1);
+document.getElementById('next').onclick=nx;document.getElementById('prev').onclick=pv;
+addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();nx()}
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();pv()}
+  else if(e.key==='Home')go(0);else if(e.key==='End')go(slides.length-1);
+  else if(e.key==='f'||e.key==='F'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+});
+let tx=null;addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+addEventListener('touchend',e=>{if(tx===null)return;const d=e.changedTouches[0].clientX-tx;if(Math.abs(d)>50)d<0?nx():pv();tx=null});
+
+/* países (média de Coffee_Intake, eixo iniciando em zero) */
+const paises=[["Spain",2.60],["Norway",2.59],["UK",2.58],["China",2.57],["USA",2.56],["Brazil",2.55],["Australia",2.54],["Switzerland",2.54],["Japan",2.53],["France",2.53],["India",2.50],["Canada",2.50],["Finland",2.48],["Germany",2.47],["Netherlands",2.46],["South Korea",2.46],["Mexico",2.45],["Italy",2.44],["Sweden",2.42],["Belgium",2.41]];
+document.getElementById('paises').innerHTML=paises.map(([p,v])=>`<div class="row"><span>${p}</span><div class="track"><div class="bar" style="--w:${(v/3*100).toFixed(1)}%"></div></div><span class="v">${v.toFixed(2).replace('.',',')}</span></div>`).join('');
+
+/* dispersão café × cafeína (amostra de 350 registros reais) */
+const pts=[[2.6,245.9],[3.1,293.1],[3.9,372.4],[1.0,92.5],[1.3,119.0],[0.5,49.8],[4.6,437.5],[3.3,312.9],[1.7,157.2],[2.3,221.7],[2.6,248.9],[2.1,203.5],[3.1,297.5],[1.7,159.5],[2.9,275.1],[2.8,268.0],[0.7,63.5],[0.7,68.5],[6.5,613.7],[2.2,208.7],[1.5,139.6],[4.0,377.9],[0.6,58.7],[1.3,120.8],[2.6,251.3],[4.4,422.1],[4.4,413.4],[2.7,258.4],[4.2,400.2],[3.4,322.9],[2.8,265.3],[3.6,339.4],[2.4,230.8],[5.9,561.5],[4.3,404.7],[1.6,152.7],[1.5,142.6],[1.7,157.5],[1.6,156.0],[1.3,122.5],[0.7,69.2],[1.9,179.5],[4.6,433.9],[5.5,521.3],[1.8,171.1],[0.4,40.6],[0.3,28.7],[1.6,148.1],[3.7,347.0],[0.7,66.7],[2.4,229.6],[5.3,501.7],[1.6,148.2],[3.8,358.8],[0.8,72.1],[1.7,159.8],[2.3,214.5],[2.5,236.6],[1.6,154.5],[2.5,234.8],[3.9,372.4],[2.6,245.2],[1.5,140.3],[2.3,220.0],[2.8,270.2],[3.3,310.8],[2.9,271.2],[1.1,101.0],[0.8,78.1],[2.2,212.9],[2.5,238.4],[4.0,376.9],[6.2,586.9],[1.6,150.7],[3.5,335.9],[0.7,69.3],[2.9,279.7],[0.3,28.2],[0.0,0.0],[3.9,375.2],[0.0,0.0],[2.3,215.4],[1.4,131.1],[0.3,30.8],[0.9,81.5],[2.2,213.7],[5.2,496.4],[0.0,0.0],[2.5,238.3],[1.0,92.9],[0.3,31.8],[5.2,489.7],[3.3,311.2],[1.3,128.2],[5.0,474.6],[2.7,259.1],[2.8,267.7],[0.0,0.0],[2.0,193.7],[1.1,108.1],[1.6,154.9],[3.1,297.4],[0.0,0.0],[4.9,462.3],[0.0,0.0],[3.1,297.1],[3.1,295.3],[2.0,193.4],[0.0,0.0],[2.7,258.1],[2.4,228.2],[2.7,260.9],[0.9,83.2],[5.8,554.7],[1.8,174.9],[4.5,423.8],[3.4,320.7],[1.6,152.1],[3.4,324.2],[0.2,15.8],[1.8,171.8],[0.1,13.4],[3.6,346.7],[0.1,12.8],[1.8,171.5],[5.6,531.7],[3.9,368.1],[3.8,363.6],[4.7,446.2],[3.3,312.7],[2.9,276.6],[1.4,134.1],[2.0,194.0],[3.0,287.4],[3.3,311.8],[0.0,0.0],[1.5,141.6],[4.1,393.7],[3.5,335.0],[3.0,282.9],[1.0,95.8],[2.9,272.6],[2.5,234.6],[4.4,413.8],[2.3,218.5],[4.3,408.7],[3.0,288.1],[3.2,307.7],[0.7,65.9],[5.5,525.5],[0.5,46.8],[0.0,0.0],[0.0,0.0],[1.4,136.6],[0.6,55.8],[1.6,147.9],[2.2,210.1],[1.5,139.9],[6.5,620.6],[2.3,219.3],[3.5,328.2],[2.9,276.5],[3.7,354.5],[3.4,318.8],[1.8,169.8],[2.7,260.5],[0.0,0.0],[3.5,328.4],[2.4,226.3],[1.2,110.2],[2.5,238.8],[2.5,241.0],[3.5,331.6],[3.0,280.3],[5.0,470.8],[4.0,381.8],[3.1,293.5],[3.8,359.6],[1.2,111.8],[3.1,295.2],[0.2,22.1],[1.8,171.6],[1.9,178.9],[2.3,222.0],[2.9,277.9],[1.8,168.2],[3.0,281.1],[2.7,254.2],[3.9,365.9],[2.9,278.0],[1.8,168.3],[1.7,157.7],[3.0,282.7],[3.4,327.5],[4.7,445.3],[3.6,342.8],[3.3,317.7],[5.6,536.3],[0.0,0.0],[1.5,139.4],[4.4,414.0],[3.4,326.6],[0.8,78.6],[0.6,59.8],[1.0,96.5],[2.0,194.0],[2.2,208.3],[2.0,187.9],[2.0,194.2],[0.7,63.7],[3.8,356.7],[1.5,139.9],[3.4,319.1],[0.9,81.2],[1.8,168.1],[2.1,201.0],[1.3,121.3],[2.1,203.7],[0.0,0.0],[4.6,437.5],[2.3,214.5],[2.8,267.2],[3.4,320.8],[5.0,473.3],[3.1,296.8],[4.9,462.7],[2.5,236.1],[2.6,247.2],[0.5,48.1],[3.8,364.2],[1.9,179.4],[2.2,205.0],[2.2,205.8],[3.0,285.5],[0.1,7.8],[3.3,312.4],[5.7,537.3],[3.5,333.3],[2.3,222.3],[0.9,85.5],[1.2,113.7],[3.6,345.1],[0.8,76.6],[0.2,20.5],[1.1,102.5],[2.1,200.4],[1.6,149.8],[2.1,199.6],[1.2,110.2],[0.6,56.0],[1.6,154.8],[1.7,159.8],[3.1,296.0],[3.0,282.5],[3.7,347.7],[0.9,85.9],[3.9,372.8],[0.9,87.5],[2.4,229.0],[2.2,208.7],[3.7,353.8],[5.1,488.1],[2.6,247.4],[2.0,191.1],[0.6,61.7],[3.8,364.6],[2.7,253.4],[2.4,231.9],[5.1,483.5],[4.3,406.7],[2.7,258.3],[3.1,295.5],[1.0,96.1],[1.7,160.2],[1.4,133.5],[2.0,187.6],[1.1,104.1],[1.2,115.3],[1.0,93.6],[0.2,18.9],[1.1,105.3],[1.1,106.8],[4.3,408.3],[0.3,30.6],[3.1,298.0],[5.6,534.7],[0.4,35.2],[0.3,29.1],[3.1,298.9],[3.5,336.5],[4.1,389.0],[1.1,103.8],[2.9,273.7],[1.9,180.4],[3.3,316.1],[1.3,122.1],[1.4,129.8],[4.1,389.4],[3.0,281.0],[1.5,138.6],[4.1,390.8],[1.3,127.1],[1.4,128.5],[5.8,546.5],[4.4,413.8],[2.3,219.1],[0.8,72.6],[1.9,181.3],[0.6,56.7],[0.0,0.0],[1.9,183.8],[0.0,0.0],[2.3,221.6],[0.5,46.8],[2.8,268.0],[1.9,179.9],[1.8,173.2],[2.4,224.5],[2.8,265.3],[2.2,210.5],[2.9,271.5],[1.2,116.1],[3.8,356.3],[2.1,198.0],[0.5,49.8],[1.5,144.2],[1.1,105.0],[1.1,107.4],[3.2,300.0],[1.3,125.6],[0.0,0.0],[0.6,53.7],[3.0,280.3],[4.2,402.1],[2.7,252.8],[3.8,359.5],[4.1,388.2],[2.6,246.4],[2.5,240.0],[2.4,229.5],[3.7,348.3],[0.0,0.0],[0.1,11.3],[1.6,155.1],[2.5,233.7],[3.5,336.1],[2.0,189.3],[4.2,401.3],[1.4,134.1],[2.9,273.2]];
+(function(){
+  const W=640,H=380,m={l:54,r:16,t:16,b:44},sx=v=>m.l+v/8.5*(W-m.l-m.r),sy=v=>H-m.b-v/800*(H-m.t-m.b);
+  let s='';
+  for(let v=0;v<=800;v+=200)s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${sy(v)}" y2="${sy(v)}" stroke="#3a2e24" stroke-width="1"/><text x="${m.l-8}" y="${sy(v)+4}" fill="#a89a8a" font-size="12" text-anchor="end">${v}</text>`;
+  for(let v=0;v<=8;v+=2)s+=`<text x="${sx(v)}" y="${H-m.b+20}" fill="#a89a8a" font-size="12" text-anchor="middle">${v}</text>`;
+  s+=`<text x="${W/2}" y="${H-6}" fill="#a89a8a" font-size="13" text-anchor="middle">Coffee_Intake</text><text transform="translate(14 ${H/2}) rotate(-90)" fill="#a89a8a" font-size="13" text-anchor="middle">Caffeine_mg</text>`;
+  s+=pts.map(([x,y],i)=>`<circle cx="${sx(x).toFixed(1)}" cy="${sy(y).toFixed(1)}" r="3.4"/>`).join('');
+  document.getElementById('scatter').innerHTML=s;
+})();
+
+/* linhas do diagrama estresse × sono */
+(function(){
+  const wrap=document.querySelector('.relwrap'),svg=document.createElementNS('http://www.w3.org/2000/svg','svg');wrap.appendChild(svg);
+  function draw(){
+    const wr=wrap.getBoundingClientRect(),k=wr.width/wrap.offsetWidth||1;let h='';
+    [['a1','b1','#e2644f'],['a2','b2','#e0a458'],['a3','b3','#7fb685']].forEach(([a,b,c])=>{
+      const A=document.getElementById(a).getBoundingClientRect(),B=document.getElementById(b).getBoundingClientRect();
+      h+=`<line x1="${(A.right-wr.left)/k}" y1="${(A.top+A.height/2-wr.top)/k}" x2="${(B.left-wr.left)/k}" y2="${(B.top+B.height/2-wr.top)/k}" stroke="${c}"/>`});
+    svg.innerHTML=h;
+  }
+  addEventListener('load',()=>setTimeout(draw,100));addEventListener('resize',draw);
+})();
+
+/* H7: taxa de problemas de saúde por idade */
+const idades=[[18,35.8],[19,33.1],[20,36.4],[21,31.6],[22,28.4],[23,33.9],[24,34.9],[25,40.6],[26,33.8],[27,32.6],[28,36.1],[29,33.7],[30,32.9],[31,40.3],[32,35.8],[33,32.0],[34,35.9],[35,36.1],[36,35.4],[37,33.8],[38,36.3],[39,30.9],[40,34.4],[41,34.1],[42,32.1],[43,34.4],[44,30.5],[45,38.0],[46,30.8],[47,36.6],[48,31.9],[49,37.0],[50,30.7],[51,100],[52,100],[53,100],[54,100],[55,100],[56,100],[57,100],[58,100],[59,100],[60,100],[61,100],[62,100],[63,100],[64,100],[65,100],[66,100],[67,100],[68,100],[69,100],[70,100],[71,100],[72,100],[73,100],[75,100],[77,100],[80,100]];
+(function(){
+  const W=660,H=400,m={l:54,r:20,t:24,b:46},sx=v=>m.l+(v-18)/62*(W-m.l-m.r),sy=v=>H-m.b-v/100*(H-m.t-m.b);
+  let s='';
+  for(let v=0;v<=100;v+=25)s+=`<line x1="${m.l}" x2="${W-m.r}" y1="${sy(v)}" y2="${sy(v)}" stroke="#3a2e24"/><text x="${m.l-8}" y="${sy(v)+4}" fill="#a89a8a" font-size="12" text-anchor="end">${v}%</text>`;
+  for(let v=20;v<=80;v+=10)s+=`<text x="${sx(v)}" y="${H-m.b+20}" fill="#a89a8a" font-size="12" text-anchor="middle">${v}</text>`;
+  s+=`<text x="${W/2}" y="${H-8}" fill="#a89a8a" font-size="13" text-anchor="middle">Idade (anos)</text>`;
+  s+=`<line x1="${sx(50.5)}" x2="${sx(50.5)}" y1="${m.t}" y2="${H-m.b}" stroke="#e2644f" stroke-dasharray="6 5" stroke-width="2"/><text x="${sx(50.5)-8}" y="${m.t+14}" fill="#e2644f" font-size="13" text-anchor="end">corte em 50 anos</text>`;
+  s+=`<polyline fill="none" stroke="#e0a458" stroke-width="2.5" points="${idades.map(([x,y])=>sx(x).toFixed(1)+','+sy(y).toFixed(1)).join(' ')}"/>`;
+  s+=idades.map(([x,y])=>`<circle cx="${sx(x).toFixed(1)}" cy="${sy(y).toFixed(1)}" r="3" fill="${x>50?'#e2644f':'#f4c97a'}"/>`).join('');
+  document.getElementById('idade').innerHTML=s;
+})();
+
+go(Math.max(0,(parseInt(location.hash.slice(1))||1)-1));
+</script>
+</body>
+</html>
